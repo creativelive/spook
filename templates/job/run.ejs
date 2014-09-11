@@ -16,6 +16,10 @@
 
 <div class="pure-u-3-4 logs">
 
+<% if(queued[run.SLUM]) { %>
+<p>you task is queued and will begin shortly</p>
+<% } %>
+
 <div class="log log-full">
 <% tests.forEach(function(test){ %>
 <div data-test="<%= test %>" class="test-log-viewer">
@@ -90,6 +94,7 @@ var msgs = <%- JSON.stringify(msgs) %>;
       }
 
       function playMsg(msg){
+        console.log(msg);
         if(msg.type === 'ln') {
           ['mini', 'full'].forEach(function(size){
             var li=document.createElement('li');
@@ -101,11 +106,9 @@ var msgs = <%- JSON.stringify(msgs) %>;
           }
           return;
         }
-        if(msg.type === 'run' && msg.val === 'end') {
-          if(!killed) {
-            if(killswitch) {
-              killswitch.style.display = 'none';
-            }
+        if(msg.type === 'END') {
+          if(!killed && killswitch) {
+            killswitch.style.display = 'none';
           }
         }
       }

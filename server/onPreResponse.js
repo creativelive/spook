@@ -21,6 +21,18 @@ module.exports = function(request, reply) {
     context.now = moment().unix();
     context.openCount = io.namespace.open.fn.count();
 
+    context.queued = {};
+    for(var run in io.namespace.run) {
+      if(io.namespace.run[run].queued) {
+        context.queued[run] = true;
+      }
+    }
+
+    console.log('OPEN:', context.openCount);
+    console.log('QUEUED:', Object.keys(context.queued).length);
+    console.log('context.openCount:', context.openCount);
+
+
     if (response.isBoom) {
       context.err = (response.output.statusCode === 404 ? 'page not found' : 'something went wrong');
       var templates = {

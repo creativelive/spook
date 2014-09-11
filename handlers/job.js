@@ -13,20 +13,23 @@ var minimist = require('minimist');
 var glob = require('glob');
 var fs = require('fs');
 var gm = require('gm');
-
+var concurrent = 1;
+var q = async.queue(function (task, cb) {
+  task(cb);
+}, concurrent);
 
 exports.act = function(request, reply) {
   db.run.findOne({SLUG: request.params.slug, NUM: parseInt(request.params.num, 10), ACT: { $exists: true }}, function (err, run) {
-    if(!run || !io.namespace[run.SLUM]) {
+    if(!run || !io.namespace.run[run.SLUM]) {
       return reply.redirect('/' + path.join('job', request.params.slug, request.params.num));
     }
-    var data = io.namespace[run.SLUM].data;
+    var data = io.namespace.run[run.SLUM].data;
 
     reply.view('job/run', {
       tests: data.tests,
       run: data.run,
       job: data.job,
-      msgs: io.namespace[run.SLUM].msgs
+      msgs: io.namespace.run[run.SLUM].msgs
     });
   });
 };
@@ -99,11 +102,6 @@ exports.run = function(request, reply) {
   var job;
   var mask;
 
-  db.job.findOne({ SLUG: request.params.slug }, function (err, doc) {
-    job = doc;
-
-  });
-
   async.series({
     job: function(cb){
       db.job.findOne({ SLUG: request.params.slug }, function (err, doc) {
@@ -124,6 +122,7 @@ exports.run = function(request, reply) {
         // this document is entirely replaced once run completes
         run.ALIAS = job.ALIAS;
         db.run.insert(run, function(err, doc) {
+          run = doc;
           cb(err);
         });
       });
@@ -144,7 +143,7 @@ exports.run = function(request, reply) {
           return reply(Hapi.error.internal(err));
         }
         var tests = res.tests;
-        io.namespace[run.SLUM] = {
+        io.namespace.run[run.SLUM] = {
           server: io.server.of('/' + run.SLUM),
           data: {
             tests: tests,
@@ -153,7 +152,7 @@ exports.run = function(request, reply) {
           },
           msgs: []
         };
-        io.namespace[run.SLUM].server.on('connection', function(socket){
+        io.namespace.run[run.SLUM].server.on('connection', function(socket){
           socket.on('disconnect', function(){});
           socket.on('run', function(msg){
             if(msg.action === 'kill') {
@@ -162,77 +161,91 @@ exports.run = function(request, reply) {
           });
         });
         argv.listener = function listener(msg){
-          io.namespace[run.SLUM].msgs.push(msg);
-          io.namespace[run.SLUM].server.emit('run', msg);
+          io.namespace.run[run.SLUM].msgs.push(msg);
+          io.namespace.run[run.SLUM].server.emit('run', msg);
         };
+
         io.namespace.open.data[run.SLUM] = true;
-        io.namespace.open.server.emit('run', {
-          type: 'run',
-          SLUM: run.SLUM,
-          val: 'start'
-        });
-        io.namespace.open.server.emit('run', {
-          type: 'count',
-          val: io.namespace.open.fn.count()
-        });
 
-        spook.run(function(err, res){
-          res.NUM = run.NUM;
-          res.SLUM = run.SLUM;
-          res.SLUG = run.SLUG;
-          db.run.update({SLUG:run.SLUG, NUM:run.NUM}, res, function(err, numReplaced, doc) {
+        var task = function(qcb) {
+          db.run.update({_id: run._id}, {$set: {STA: parseInt(+new Date() / 1000, 10)}}, function(err, doc) {
+            // TODO inside here
+          });
+          io.namespace.run[run.SLUM].queued = false;
 
-            io.namespace[run.SLUM].server.emit('run', {
-              type: 'run',
-              SLUM: run.SLUM,
-              val: 'end'
-            });
-            delete io.namespace[run.SLUM];
+          console.log('emit start of', run.SLUM, 'count', io.namespace.open.fn.count());
+          io.namespace.open.server.emit('run', {
+            type: 'STA',
+            SLUM: run.SLUM,
+            open: io.namespace.open.fn.count()
+          });
 
-            delete io.namespace.open.data[run.SLUM];
-            io.namespace.open.server.emit('run', {
-              type: 'run',
-              SLUM: run.SLUM,
-              val: 'end'
-            });
-            io.namespace.open.server.emit('run', {
-              type: 'count',
-              val: io.namespace.open.fn.count()
-            });
+          spook.run(function(err, res){
+            res.NUM = run.NUM;
+            res.SLUM = run.SLUM;
+            res.SLUG = run.SLUG;
+            db.run.update({SLUG:run.SLUG, NUM:run.NUM}, res, function(err, numReplaced, doc) {
 
-            // make some images
-            glob('*.jpg', {
-              cwd: argv.out
-            }, function (err, images) {
-              var gms = [];
-              if(images) {
-                images.forEach(function(img){
-                  gms.push(function(cb){
-                    var rs = fs.createReadStream(path.join(argv.out, img));
-                    var ws = fs.createWriteStream(path.join(argv.out, 'thumb.' + img));
-                    gm(rs)
-                      .resize(200)
-                      .stream()
-                      .pipe(ws);
-                    ws.on('close', function() {
-                      cb();
+
+              // io.namespace.run[run.SLUM].server.emit('run', {
+              //   type: 'END',
+              //   SLUM: run.SLUM,
+              //   count: io.namespace.open.fn.count() - 1;
+              // });
+              delete io.namespace.run[run.SLUM];
+
+
+              delete io.namespace.open.data[run.SLUM];
+              io.namespace.open.server.emit('run', {
+                type: 'END',
+                SLUM: run.SLUM,
+                open: io.namespace.open.fn.count()
+              });
+
+              qcb();
+              // make some images
+              glob('*.jpg', {
+                cwd: argv.out
+              }, function (err, images) {
+                var gms = [];
+                if(images) {
+                  images.forEach(function(img){
+                    gms.push(function(cb){
+                      var rs = fs.createReadStream(path.join(argv.out, img));
+                      var ws = fs.createWriteStream(path.join(argv.out, 'thumb.' + img));
+                      gm(rs)
+                        .resize(200)
+                        .stream()
+                        .pipe(ws);
+                      ws.on('close', function() {
+                        cb();
+                      });
+
                     });
-
                   });
+                }
+                async.parallelLimit(gms, 10, function(err) {
+                  // all images done
                 });
-              }
-              async.parallelLimit(gms, 10, function(err) {
-                // all images done
               });
             });
           });
-        });
+        };
+
+        if((io.namespace.open.fn.count() - concurrent) >= concurrent) {
+          io.namespace.run[run.SLUM].queued = true;
+        }
+
         reply.view('job/run', {
+          queued: io.namespace.run[run.SLUM].queued,
           tests: tests,
           run: run,
           job: job,
-          msgs: io.namespace[run.SLUM].msgs
+          msgs: io.namespace.run[run.SLUM].msgs
         });
+
+
+        q.push(task);
       });
     });
   });

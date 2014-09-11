@@ -73,18 +73,14 @@ module.exports = function init(opts) {
     server.start(function(){
       console.log(chalk.blue('[spook] server started on port', opts.port));
 
+      io.namespace.run = {};
       io.namespace.open = {
         server: io.server.of('/open'),
         data: {}
       };
-      io.namespace.open.fn = {
-        count: function() {
-          var count = Object.keys(io.namespace.open.data);
-          if(count) {
-            return count.length;
-          }
-          return 0;
-        }
+      io.namespace.open.fn = {};
+      io.namespace.open.fn.count = function() {
+        return Object.keys(io.namespace.open.data).length || 0;
       };
       io.namespace.open.server.on('connection', function(socket){
         socket.on('disconnect', function(){});

@@ -21,11 +21,16 @@
   <tr>
     <td class="num"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span><%= run.NUM %></span></a></td>
     <% if(run.ACT) {
-      run.DU = now - run.STA;
+      if(queued[run.SLUM]) {
+        run.DU = 0;
+        run.DUDisplay = 'wait';
+      } else {
+        run.DU = run.DUDisplay = now - run.STA;
+      }
     %>
     <td class="state badge"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
     <td colspan="5"></td>
-    <td class="time info"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DU %></span>s</a></td>
+    <td class="time info"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DUDisplay %></span>s</a></td>
     <td class="time info"></td>
     <% } else { %>
     <td class="state badge"><a href="/job/<%= job.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>

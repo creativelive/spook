@@ -22,8 +22,15 @@
 
   <div class="menu-section">
     <div id="run-time" class="time">
-      <% if(!run.END) run.DU = now - run.STA; %>
-      <a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DU %></span>s</a>
+      <%
+        if(queued[run.SLUM]) {
+          run.DU = 0;
+          run.DUDisplay = 'wait';
+        } else {
+          run.DU = run.DUDisplay = now - run.STA;
+        }
+      %>
+      <a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DUDisplay %></span>s</a>
     </div>
   </div>
 

@@ -6,6 +6,15 @@
 </div>
 
 
+
+<script>
+var queued = {};
+<% if(locals.queued) { %>
+queued = <%- JSON.stringify(queued) %>;
+<% } %>
+</script>
+
+
 <script>
 var DUs = {};
 Array.prototype.forEach.call(document.querySelectorAll('[data-DU]'), function(el) {
@@ -19,7 +28,9 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-DU]'), function(el
 if(Object.keys(DUs).length) {
   var DUInterval = setInterval(function(){
     for(var DU in DUs){
-      DUs[DU].dom.innerText = ++DUs[DU].val;
+      if(!queued[DU]) {
+        DUs[DU].dom.innerText = ++DUs[DU].val;
+      }
     }
     if(Object.keys(DUs).length === 0) {
       clearInterval(DUInterval);
@@ -35,9 +46,10 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-END]'), function(e
   });
 });
 
+var now = parseInt(+new Date() / 1000, 10);
+
 if(ENDs.length) {
   var EndInterval = setInterval(function(){
-    var now = parseInt(+new Date() / 1000, 10);
     ENDs.forEach(function(END){
       END.dom.innerText = moment.duration((END.val - now), 'seconds').humanize(true)
     })
@@ -48,7 +60,8 @@ var openCount = document.getElementById('open-count')
 var open = io('http://localhost:3000/open');
 open.on('run', function(msg){
   console.log(msg);
-  if(msg.type === 'run' && msg.val === 'end') {
+  if(msg.type === 'END') {
+    openCount.innerText = msg.open;
     if (DUs[msg.SLUM].dom.classList) {
       DUs[msg.SLUM].dom.classList.add('run-done');
     } else {
@@ -58,8 +71,9 @@ open.on('run', function(msg){
     delete DUs[msg.SLUM];
     return;
   }
-  if(msg.type === 'count') {
-    openCount.innerText = msg.val;
+  if(msg.type === 'STA') {
+    openCount.innerText = msg.open;
+    delete queued[msg.SLUM];
     return;
   }
 });
