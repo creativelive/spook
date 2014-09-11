@@ -1,0 +1,70 @@
+
+
+
+
+</div>
+</div>
+
+
+<script>
+var DUs = {};
+Array.prototype.forEach.call(document.querySelectorAll('[data-DU]'), function(el) {
+  var SLUM = el.getAttribute('data-SLUM');
+  DUs[SLUM] = {
+    dom: el,
+    val: el.getAttribute('data-DU')
+  };
+});
+
+if(Object.keys(DUs).length) {
+  var DUInterval = setInterval(function(){
+    for(var DU in DUs){
+      DUs[DU].dom.innerText = ++DUs[DU].val;
+    }
+    if(Object.keys(DUs).length === 0) {
+      clearInterval(DUInterval);
+    }
+  }, 1000);
+}
+
+var ENDs = [];
+Array.prototype.forEach.call(document.querySelectorAll('[data-END]'), function(el) {
+  ENDs.push({
+    dom: el,
+    val: el.getAttribute('data-END')
+  });
+});
+
+if(ENDs.length) {
+  var EndInterval = setInterval(function(){
+    var now = parseInt(+new Date() / 1000, 10);
+    ENDs.forEach(function(END){
+      END.dom.innerText = moment.duration((END.val - now), 'seconds').humanize(true)
+    })
+  }, 60000);
+}
+
+var openCount = document.getElementById('open-count')
+var open = io('http://localhost:3000/open');
+open.on('run', function(msg){
+  console.log(msg);
+  if(msg.type === 'run' && msg.val === 'end') {
+    if (DUs[msg.SLUM].dom.classList) {
+      DUs[msg.SLUM].dom.classList.add('run-done');
+    } else {
+      // IE9 compat
+      DUs[msg.SLUM].dom.className += ' ' + 'run-done';
+    }
+    delete DUs[msg.SLUM];
+    return;
+  }
+  if(msg.type === 'count') {
+    openCount.innerText = msg.val;
+    return;
+  }
+});
+
+</script>
+
+</body>
+</html>

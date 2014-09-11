@@ -1,0 +1,51 @@
+{
+  "name": "spook",
+  "version": "0.0.5",
+  "description": "functional testing harness for casperjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "alias gulp='node_modules/gulp/bin/gulp.js' && gulp beautify && gulp eslint",
+    "lint": "alias gulp='node_modules/gulp/bin/gulp.js';gulp beautify && gulp eslint",
+    "beautify": "node_modules/gulp/bin/gulp.js beautify --write"
+  },
+  "preferGlobal": true,
+  "author": "Matthew Hadley (https://github.com/diffsky)",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp-jsbeautifier": "0.0.2",
+    "gulp-eslint": "^0.1.8",
+    "gulp": "^3.8.7",
+    "gulp-diff": "^0.1.4",
+    "minimist": "^0.2.0"
+  },
+  "bin": {
+    "spook": "bin/spook"
+  },
+  "dependencies": {
+    "minimist": "^1.1.0",
+    "moment": "^2.8.2",
+    "mkdirp": "^0.5.0",
+    "pad": "0.0.5",
+    "rimraf": "^2.2.8",
+    "async": "^0.9.0",
+    "split": "^0.3.0",
+    "hapi": "^6.7.1",
+    "chalk": "^0.5.1",
+    "ejs": "^1.0.0",
+    "nedb": "^0.11.0",
+    "gm": "^1.16.0",
+    "deap": "^1.0.0",
+    "lru-cache": "^2.5.0",
+    "slug": "^0.5.0",
+    "glob": "^4.0.5",
+    "socket.io": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/creativelive/spook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/creativelive/spook/issues"
+  },
+  "homepage": "https://github.com/creativelive/spook"
+}

@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+/*eslint no-process-exit:0 */
+'use strict';
+
+var argv = require('minimist')(process.argv.slice(2));
+var pkg = require('../package.json');
+var util = require('util');
+var formatter = require('../lib/formatter');
+var Spook = require('../lib/spook');
+var slug = require('slug');
+
+function ghost(msg) {
+  if(argv.ghost === false) {
+    console.log(msg);
+    return;
+  }
+  console.log(' ____');
+  console.log('|░▒░▒|', msg);
+  console.log('|░▓░░|');
+  console.log('|░░░░|');
+  console.log('|/\\|\\|');
+  console.log('');
+}
+
+if(argv.version) {
+  ghost('Spook version ' + pkg.version);
+  process.exit();
+}
+
+function help() {
+  var usage = []
+    .concat(pkg.name + ' ' + pkg.version)
+    .concat('')
+    .concat('functional test harness')
+    .concat('')
+    .concat('--tests tests to run')
+    .concat('--record record the run output')
+    ;util.puts(usage.join('\n'));
+    process.exit();
+}
+
+if(argv.help || argv.h || argv['?']){
+  help();
+}
+
+if(argv.server) {
+  require('../server')({
+    cwd: argv.cwd
+  });
+} else if (argv.add) {
+
+  var job = {};
+  job.ALIAS = argv.add;
+  job.SLUG = slug(job.ALIAS);
+  job.CMD = '';
+  delete argv.add;
+
+  for(var arg in argv){
+    if(arg !== '_'){
+      job.CMD += '--' + arg + ' ' + argv[arg] + ' ';
+    }
+  }
+  job.CMD += '-- ' + argv._.join(' ');
+
+  require('../lib/db')({
+    runPath: argv.out || process.cwd()
+  }, function(err, db){
+    if(err) {
+      console.log(err);
+      process.exit(1);
+    }
+    db.job.insert(job, function(err, doc){
+      if(err) {
+        console.log(err);
+        process.exit(1);
+      }
+      ghost('added job "' + job.ALIAS + '"');
+    });
+  });
+
+
+} else {
+  argv.verbose = true;
+  argv.work = argv.work || 'series';
+
+  var spook = Spook(argv, function(err, res){
+    spook.run(function(err, res) {
+      if(err || !res) {
+        console.log(err);
+        process.exit(1);
+      } else {
+        formatter(res);
+        ghost('Spook run took ' + res.DU + 's');
+      }
+    });
+  });
+}

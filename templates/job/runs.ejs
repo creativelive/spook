@@ -1,0 +1,46 @@
+<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a>' %>
+
+<% include ../header %>
+<div class="pure-u-1-1">
+
+<table class="runs">
+  <thead>
+  <tr>
+    <td></td>
+    <td></td>
+    <td class="count">total</td>
+    <td class="count">passed</td>
+    <td class="count">failed</td>
+    <td class="count">dubious</td>
+    <td class="count">skipped</td>
+    <td class="info duration">duration</td>
+    <td class="info"></td>
+  </tr>
+  </thead>
+  <% runs.forEach(function(run){ %>
+  <tr>
+    <td class="num"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span><%= run.NUM %></span></a></td>
+    <% if(run.ACT) {
+      run.DU = now - run.STA;
+    %>
+    <td class="state badge"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
+    <td colspan="5"></td>
+    <td class="time info"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DU %></span>s</a></td>
+    <td class="time info"></td>
+    <% } else { %>
+    <td class="state badge"><a href="/job/<%= job.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>
+    <td class="result"><%= run.TO.TO %></td>
+    <td class="result"><%= run.TO.PA %></td>
+    <td class="result"><%= run.TO.FA %></td>
+    <td class="result"><%= run.TO.DB %></td>
+    <td class="result"><%= run.TO.SK %></td>
+    <td class="time info"><% if(run.END) { %><%= run.DU %><span class="testing"><%= run.TO.DU %></span><% } %></td>
+    <td class="time info"><% if(run.END) { %><span data-END="<%= run.END %>"><%= moment.duration((run.END - now), 'seconds').humanize(true) %></span><% } %></td>
+    <% } %>
+  </tr>
+  <% }); %>
+</table>
+
+</div>
+
+<% include ../footer %>

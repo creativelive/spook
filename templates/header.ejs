@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="/img/spook-64.png">
+  <title>spook</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/spook.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/animate.css"/>
+  <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+  <script src="/js/moment.min.js"></script>
+</head>
+<body>
+<div id="menu">
+  <h1><a href="/">Spook</a></h1>
+
+  <div class="menu-section">
+    <h2><%- (locals.subtitle || '') %></h2>
+  </div>
+
+  <% if(locals.ctrls) { %>
+
+  <div class="menu-section">
+    <div id="run-time" class="time">
+      <% if(!run.END) run.DU = now - run.STA; %>
+      <a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DU %></span>s</a>
+    </div>
+  </div>
+
+  <div id="run-ctrls">
+    <div class="menu-section">
+      <div id="scroll-ctrl">
+        <div class="onoffswitch">
+          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="auto-scroll" checked>
+          <label class="onoffswitch-label" for="auto-scroll">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+      <span id="scroll-ctrl-label">auto<br>scroll</span>
+    </div>
+
+    <div class="menu-section">
+      <div id="kill-ctrl">
+        <div id="kill-switch">
+          <img src="/img/neutral.png"><span>KILL</span>
+        </div>
+        <div id="kill-switch-done">
+          <img src="/img/VOID.png"><span class="bg-VOID">VOID</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <% } %>
+
+  <div id="meta">
+    <a href="/open"><span id="open-count"><%= openCount %></span><span id="open" class="bg-OPEN">OPEN</span></a>
+  </div>
+</div>
+
+<div id="container">
+  <div class="pure-g">

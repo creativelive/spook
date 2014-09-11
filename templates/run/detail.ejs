@@ -1,0 +1,70 @@
+<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a> <a href="/job/' + job.SLUG + '/' +run.NUM + '">#' + run.NUM +'<span>ran ' + moment.duration((run.END - now), 'seconds').humanize(true) + '</span></a>' %>
+
+<% include ../header %>
+<div class="pure-u-1-1">
+
+<table class="runs">
+  <thead>
+  <tr>
+    <td colspan="2"></td>
+    <td></td>
+    <td class="count">total</td>
+    <td class="count">passed</td>
+    <td class="count">failed</td>
+    <td class="count">dubious</td>
+    <td class="count">skipped</td>
+    <td class="info">duration</td>
+  </tr>
+  </thead>
+
+  <tr class="detail">
+    <td class="num"><span><%= run.NUM %></span></td>
+    <td class="state badge" ><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></td>
+    <td></td>
+    <td class="result"><%= run.TO.TO %></td>
+    <td class="result"><%= run.TO.PA %></td>
+    <td class="result"><%= run.TO.FA %></td>
+    <td class="result"><%= run.TO.DB %></td>
+    <td class="result"><%= run.TO.SK %></td>
+    <td class="info time"><%= run.DU %> <span class="testing"><%= run.TO.DU %></span></td>
+  </tr>
+    <%
+      for(var NAME in run.TE) {
+        var TE = run.TE[NAME];
+    %>
+    <tr>
+      <td class="test" colspan="2"><a href="#<%= NAME %>"><%= NAME %></a></td>
+      <td class="state badge"><img src="/img/<%= TE.ST %>.png" /><span class="bg-<%= TE.ST %>"><%= TE.ST %></span></td>
+      <td class="result"><%= TE.TO %></td>
+      <td class="result"><%= TE.PA %></td>
+      <td class="result"><%= TE.FA %></td>
+      <td class="result"><%= TE.DB %></td>
+      <td class="result"><%= TE.SK %></td>
+      <td class="info time"><%= TE.DU %>&nbsp;</td>
+    </tr>
+  <% } %>
+
+</table>
+
+<h2>Log <a href="/file/<%= job.SLUG %>/<%= run.MASK %>/run.log"><span>[view raw]</span></a></h2>
+<div class="log">
+<%- log %>
+</div>
+
+<div class="screenshots">
+<% if (images.length) { %>
+<h2>Screenshots</h2>
+<% images.forEach(function(img){ %>
+  <div>
+    <a class="anchor" name="<%= img %>"></a>
+    <a href="/file/<%= job.SLUG %>/<%= run.MASK %>/<%= img %>">
+      <h4><%= img %></h4>
+      <img src="/file/<%= job.SLUG %>/<%= run.MASK %>/thumb.<%= img %>" />
+    </a>
+  </div>
+<% }) %>
+</div>
+<% } %>
+
+</div>
+<% include ../footer %>

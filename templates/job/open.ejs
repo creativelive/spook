@@ -1,0 +1,27 @@
+<%
+if(runs.length) {
+  locals.subtitle = 'open runs'
+} else {
+  locals.subtitle = 'no open runs'
+}
+%>
+
+
+
+<% include ../header %>
+<div class="pure-u-1-1">
+
+<table class="runs">
+  <tr>
+  <% runs.forEach(function(run){ run.DU = now - run.STA; %>
+    <td class="num"><a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span><%= run.NUM %></span></a></td>
+    <td class="state badge"><a data-tip="#<%= run.NUM %>" href="/open/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
+    <td class="job"><a href="/job/<%= run.SLUG %>"><%= run.ALIAS %><a/></td>
+    <td class="time info duration"><a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DU %></span>s</a></td>
+  </tr>
+  <% }); %>
+</table>
+
+</div>
+
+<% include ../footer %>

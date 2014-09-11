@@ -1,0 +1,512 @@
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+  /* Set your content font stack here: */
+  font-family: cambria,georgia,serif;
+}
+
+/* GENERAL */
+body {
+  background: #FFF;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+.time {
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+
+/* LAYOUT */
+#container {
+  margin: 60px 10px 40px 10px;
+}
+
+/* HEADERS */
+h1 span {
+  font-size: 0.7em;
+  margin-left:1em;
+  font-weight: normal;
+}
+
+h1 {
+  font-size:2em;
+  color:#333;
+  padding-left: 36px;
+  background: url('/img/spook-64.png') no-repeat 2px 0px;
+  background-size: 36px 36px;
+  margin: 0;
+  width: 120px;
+  display:inline-block;
+}
+
+h2 span {
+  font-size: 60%;
+  font-weight: normal;
+  padding-left: 10px;
+}
+
+/* MENU */
+#menu {
+  height: 40px;
+  position:fixed;
+  top: 0;
+  width: 100%;
+  padding: 2px 0px 0px 0px;
+  background-color: #FFF;
+  -moz-box-shadow: 0px 5px 5px #FFF;
+  -webkit-box-shadow: 0px 5px 5px #FFF;
+  box-shadow: 0px 5px 5px #FFF;
+}
+
+#menu h2 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+#menu .menu-section {
+  display:inline-block;
+  margin-right: 30px;
+}
+
+#meta {
+  position:absolute;
+  right:0;
+  top:0;
+  padding: 0 20px 0 0;
+}
+
+/* RUN CTRLS */
+.run-done {
+  font-size: 2em;
+  color: #EEC625;
+}
+
+#run-time {
+  font-size: 0.9em;
+  width: 40px;
+}
+
+#run-ctrls {
+  display: inline;
+}
+
+#scroll-ctrl {
+  display: inline-block;
+}
+
+#scroll-ctrl .onoffswitch {
+  top: 7px;
+}
+
+#scroll-ctrl-label {
+  display: inline-block;
+  font-size: 70%;
+  vertical-align: bottom;
+  text-align:center;
+  color: #9B9B9B;
+}
+
+#kill-ctrl {
+  width: 105px;
+  cursor: pointer;
+}
+
+#kill-ctrl img {
+  float: left;
+  width: 40px;
+  margin-top: -12px;
+}
+
+#kill-ctrl span {
+  width: 45px;
+  padding: 4px 5px;
+  border: 1px solid #000;
+}
+
+#kill-switch-done {
+  display: none;
+  width: 120px;
+}
+
+#kill-switch-done span {
+  width: 65px;
+}
+
+#open {
+  width: 45px;
+  margin: 10px 0px;
+  padding: 4px 5px;
+  display:inline-block;
+}
+
+#open-count {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 1.4em;
+}
+
+/* RUN TABLE*/
+table {
+  width: 100%;
+  border-bottom: 2px solid #333;
+}
+
+tbody tr {
+  border-top: 1px solid #333;
+}
+
+tr:nth-child(2n) {
+  background: #F1F1F1;
+}
+
+td {
+  text-align: center;
+}
+
+thead td {
+  font-size: 80%;
+}
+
+td.num {
+  font-size: 2em;
+  width: 65px;
+}
+
+td.num span {
+  display: block;
+  border-right: 1px solid #333;
+}
+
+td.count {
+  width: 50px;
+  font-weight: normal;
+}
+
+td.run {
+  width: 50px;
+}
+
+td.run img {
+  width: 40px;
+  float: right;
+}
+
+td.info {
+  text-align: left;
+  padding-left: 15px;
+}
+
+td.result {
+  font-size: 1.6em;
+}
+
+tr.detail td.result {
+  font-size: 1.6em;
+}
+
+tr.detail td {
+  border-bottom: 4px solid #333333;
+}
+
+tr.detail td.domain {
+  font-size: 1.2em;
+}
+
+td.time {
+  font-size: 0.8em;
+}
+
+td.state img {
+  width: 40px;
+  float: left;
+}
+
+td.state p {
+  text-align: left;
+  margin: 0;
+}
+
+td.state.badge {
+  width: 105px;
+}
+
+td.state span {
+  display: block;
+  width: 48px;
+  text-align: center;
+  float: left;
+  margin-top:6px;
+}
+
+td.state.history img {
+  margin-bottom: -2px;
+}
+
+td.duration {
+  width: 150px;
+}
+
+/* make last status sit over table bottom border */
+table.runs tbody>tr:last-child td.state.history img {
+  margin-bottom: -3px;
+}
+
+td.job {
+  font-size: 1.3em;
+  text-align: left;
+}
+
+td.job a {
+  display: block;
+}
+
+td.test {
+  text-align: right;
+  font-size: 1.1em;
+}
+
+td.state span {
+  padding: 5px;
+}
+
+td.time span.testing {
+  color: #A3A3A1;
+  display: block;
+}
+
+/* SCREENSHOTS */
+.screenshot-mini {
+  margin-right: 10px;
+  margin-bottom: -2px;
+  height: 50px;
+  width: 50px;
+  border: 1px solid #EBEBEB;
+  display: inline-block;
+}
+
+.screenshots div {
+  float: left;
+  margin: 5px;
+  width: 200px;
+  word-wrap: break-word;
+}
+
+.screenshots h2 {
+  margin-bottom: -5px;
+}
+
+.screenshots h4 {
+  border-top: 1px solid #F1F1F1;
+  padding-top: 15px;
+  color: #4d4d4c;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-weight: normal;
+  min-height: 40px;
+  max-height: 40px;
+  text-align: center;
+}
+
+/* RUN LOG */
+.log {
+  display: block;
+  color: #4d4d4c;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  line-height: 1.5;
+  padding: 0;
+  margin-top: -20px;
+  width:100%;
+  overflow: scroll;
+}
+
+.log a {
+  color: #4d4d4c
+}
+
+/*
+account for fixed header
+http://stackoverflow.com/a/13184714/1233020
+*/
+.anchor {
+  display: block;
+  position: relative;
+  top: -50px;
+  visibility: hidden;
+}
+
+/* SIMPLE TOOLTIP */
+a.tip {
+  position: relative;
+  text-decoration: none;
+}
+
+a.tip:hover:before {
+  display: block;
+  position: absolute;
+  padding: .5em;
+  content: attr(data-tip);
+  min-width: 20px;
+  text-align: center;
+  width: auto;
+  height: auto;
+  white-space: nowrap;
+  top: -32px;
+  background: rgba(0,0,0,.8);
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  border-radius:10px;
+  color: #fff;
+  font-size: .8em;
+}
+
+a.tip.tip-left:hover:before {
+  top: 10px;
+  left: -20px;
+}
+
+/* EVENTS */
+.log-mini {
+  font-size: 6px;
+  margin-top: 0px;
+}
+
+.logs h2 {
+  font-weight: normal;
+}
+
+.log-mini h2 {
+  font-size: 15px;
+}
+
+.logs ul {
+  list-style-type: none;
+  margin: 0 0 0 10px;
+  padding: 0;
+}
+
+.test-log-mini {
+  cursor: pointer;
+}
+
+
+.log-full {
+  text-align: left;
+  padding-left: 10px;
+}
+
+.log-full div {
+  display: none;
+}
+
+
+/* RUN STATES */
+.fg-PASS {
+  color: #19C736
+}
+.bg-PASS {
+  background-color: #6DD12C;
+  color: #FFF;
+}
+.bb-PASS {
+  border-bottom: 5px solid #6DD12C;
+}
+
+.fg-WARN {
+  color: #CCC93C
+}
+.bg-WARN {
+  background-color: #CCC93C;
+  color: #FFF;
+}
+.bb-WARN {
+  border-bottom: 5px solid #CCC93C;
+}
+
+.fg-FAIL {
+  color: #CD3328
+}
+.bg-FAIL {
+  background-color: #CD3328;
+  color: #FFF;
+}
+.bb-FAIL {
+  border-bottom: 5px solid #CD3328;
+}
+
+.fg-NONE, .fg-VOID {
+  color: #000
+}
+.bg-NONE, .bg-VOID {
+  background-color: #000;
+  color: #FFF;
+}
+.bb-NONE, .bb-VOID {
+  border-bottom: 5px solid #000;
+}
+.bg-OPEN {
+  background-color: #32A4FF;
+  color: #FFF;
+}
+
+
+/* RADIO BUTTON */
+/*http://proto.io/freebies/onoff/*/
+.onoffswitch {
+    position: relative; width: 48px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #FFFFFF; border-radius: 50px;
+}
+
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.2s ease-in 0s; -webkit-transition: margin 0.2s ease-in 0s;
+    -o-transition: margin 0.2s ease-in 0s; transition: margin 0.2s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 24px; padding: 0; line-height: 24px;
+    font-size: 25px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 14px;
+    background-color: #EEEEEE; color: #2FCCFF;
+}
+
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 14px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block; width: 24px; margin: 0px;
+    background: #A1A1A1;
+    border: 2px solid #FFFFFF; border-radius: 50px;
+    position: absolute; top: 0; bottom: 0; right: 20px;
+    -moz-transition: all 0.2s ease-in 0s; -webkit-transition: all 0.2s ease-in 0s;
+    -o-transition: all 0.2s ease-in 0s; transition: all 0.2s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+    background-color: #66D673;
+}
