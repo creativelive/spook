@@ -142,6 +142,9 @@ exports.run = function(request, reply) {
       argv.record = true;
 
       var spook = Spook(argv, function(err, res){
+        if(err) {
+          return reply(Hapi.error.internal(err));
+        }
         var tests = res.tests;
         io.namespace[run.SLUM] = {
           server: io.server.of('/' + run.SLUM),
@@ -176,7 +179,6 @@ exports.run = function(request, reply) {
         });
 
         spook.run(function(err, res){
-
           res.NUM = run.NUM;
           res.SLUM = run.SLUM;
           res.SLUG = run.SLUG;
