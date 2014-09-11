@@ -58,7 +58,6 @@ exports.list = function(request, reply) {
 
 exports.open = function(request, reply) {
   db.run.find({ACT: 1}).sort({ NUM: -1 }).exec(function (err, runs) {
-    console.log(err, runs);
     reply.view('job/open', {
       runs: runs
     });
@@ -125,7 +124,6 @@ exports.run = function(request, reply) {
         // this document is entirely replaced once run completes
         run.ALIAS = job.ALIAS;
         db.run.insert(run, function(err, doc) {
-          console.log(err);
           cb(err);
         });
       });
