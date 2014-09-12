@@ -117,10 +117,7 @@ if(runCtrls) {
   if(killswitch) {
     killswitch.addEventListener('click', function(){
       killed = true;
-      socket.emit('run', {
-        action: 'kill',
-        SLUM: SLUM
-      });
+      socket.emit('kill', SLUM);
       killswitch.style.display = 'none';
       document.getElementById('kill-switch-done').style.display = 'block';
     });
@@ -156,9 +153,7 @@ if(runCtrls) {
     console.log(err);
   });
   if(SLUM) {
-    console.log('WAT');
     socket.emit('join', SLUM);
-
   }
   socket.on('run', playMsg);
 }

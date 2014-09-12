@@ -82,6 +82,10 @@ module.exports = function init(opts) {
         socket.on('join', function(room) {
           socket.join(room);
         });
+        socket.on('kill', function(SLUM) {
+          io.room[SLUM].kill();
+        });
+
         socket.on('disconnect', function() {
           console.log('user left io');
         });

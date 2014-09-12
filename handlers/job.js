@@ -189,7 +189,8 @@ exports.run = function(request, reply) {
             job: job
           },
           queued: true,
-          msgs: []
+          msgs: [],
+          kill: spook.kill
         };
 
         argv.listener = function listener(msg) {
