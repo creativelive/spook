@@ -24,7 +24,7 @@ module.exports = function init(opts) {
       }
     }
   };
-  if(opts.dev) {
+  if (opts.dev) {
     serverOpts.debug = {
       request: ['error']
     };
