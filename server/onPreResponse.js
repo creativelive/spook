@@ -16,7 +16,6 @@ module.exports = function(request, reply) {
       context = response.source.context || {};
     }
 
-    // make moment available to ejs templates
     context.moment = moment;
     context.now = moment().unix();
     context.openCount = Object.keys(io.room).length || 0;
@@ -27,11 +26,6 @@ module.exports = function(request, reply) {
         context.queued[run] = true;
       }
     }
-
-    // console.log('OPEN:', context.openCount);
-    // console.log('QUEUED:', Object.keys(context.queued).length);
-    // console.log('context.openCount:', context.openCount);
-
 
     if (response.isBoom) {
       context.err = (response.output.statusCode === 404 ? 'page not found' : 'something went wrong');
