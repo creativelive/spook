@@ -10,7 +10,7 @@ module.exports = function(opts) {
     path: '/file/{file*}',
     handler: {
       directory: {
-        path: path.join(opts.cwd, 'run'),
+        path: path.join(opts.runPath),
         listing: false,
         index: false
       }

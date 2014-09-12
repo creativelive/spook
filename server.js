@@ -12,13 +12,10 @@ module.exports = function init(opts) {
   opts.cwd = opts.cwd || process.cwd();
 
   // server opts
-  var server = new Hapi.Server('localhost', opts.port, {
+  var serverOpts = {
     cors: true,
-    debug: {
-      request: ['error']
-    },
     views: {
-      isCached: false,
+      isCached: true,
       path: path.join(__dirname, 'templates'),
       engines: {
         ejs: {
@@ -26,7 +23,14 @@ module.exports = function init(opts) {
         }
       }
     }
-  });
+  };
+  if(opts.dev) {
+    serverOpts.debug = {
+      request: ['error']
+    };
+    serverOpts.views.isCached = false;
+  }
+  var server = new Hapi.Server('localhost', opts.port, serverOpts);
 
   server.settings.app = opts;
   server.settings.app.runPath = path.join(opts.cwd, 'run');
@@ -64,28 +68,14 @@ module.exports = function init(opts) {
     }
     server.app.db = res;
     server.route(require('./routes/static'));
-    server.route(require('./routes/runnables')(opts));
+    server.route(require('./routes/runnables')({
+      runPath: server.settings.app.runPath
+    }));
     server.route(require('./routes'));
     server.ext('onPreResponse', require('./server/onPreResponse'));
 
     server.start(function() {
       console.log(chalk.blue('[spook] server started on port', opts.port));
-
-      // io.namespace.run = {};
-      // io.namespace.open = {
-      //   server: io.server.of('/open'),
-      //   data: {}
-      // };
-      // io.namespace.open.fn = {};
-      // io.namespace.open.fn.count = function() {
-      //   return Object.keys(io.namespace.open.data).length || 0;
-      // };
-      // io.namespace.open.server.on('connection', function(socket){
-      //   console.log('user join open');
-      //   socket.on('disconnect', function(){
-      //     console.log('user left open');
-      //   });
-      // });
 
       io.server.on('connection', function(socket) {
         console.log('user join io');

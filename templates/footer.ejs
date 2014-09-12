@@ -1,28 +1,14 @@
-
-
-
-
 </div>
 </div>
 
-
-<% if(locals.msgs) { %>
+<% /* TODO: clean up */ %>
 <script>
 var msgs = <%- JSON.stringify(msgs) %>;
-</script>
-<% } %>
-
-<script>
-var queued = {};
-<% if(locals.queued) { %>
-queued = <%- JSON.stringify(queued) %>;
-<% } %>
-
+var queued = <%- JSON.stringify(queued) %>;
 <% if(locals.run) { %>
 var SLUM = '<%= run.SLUM %>';
 <% } %>
 </script>
-
 
 <script>
 var DUs = {};
@@ -66,7 +52,6 @@ if(ENDs.length) {
 }
 
 var openCount = document.getElementById('open-count');
-
 var socket = io('http://localhost:3000');
 socket.on('open', function(msg){
   console.log(msg);
@@ -92,99 +77,91 @@ socket.on('open', function(msg){
 });
 
 
-  var killed;
-
-
-  var killswitch = document.getElementById('kill-switch');
-
-  var runCtrls = document.getElementById('run-ctrls');
-  if(runCtrls) {
-    var autoscroll = true;
-    var log = {};
-    document.getElementById('auto-scroll').addEventListener('click', function(){
-      autoscroll = !autoscroll;
-    });
-    Array.prototype.forEach.call(document.getElementsByClassName('test-tip'), function(el) {
-      log[el.getAttribute('data-test')] = {
-        dom: {
-          tip: el
-        },
-        visible: false
+var killed;
+var killswitch = document.getElementById('kill-switch');
+var runCtrls = document.getElementById('run-ctrls');
+if(runCtrls) {
+  var autoscroll = true;
+  var log = {};
+  document.getElementById('auto-scroll').addEventListener('click', function(){
+    autoscroll = !autoscroll;
+  });
+  Array.prototype.forEach.call(document.getElementsByClassName('test-tip'), function(el) {
+    log[el.getAttribute('data-test')] = {
+      dom: {
+        tip: el
+      },
+      visible: false
+    }
+  });
+  Array.prototype.forEach.call(document.getElementsByClassName('test-log-viewer'), function(el) {
+    log[el.getAttribute('data-test')].dom.viewer = el;
+  });
+  Array.prototype.forEach.call(document.getElementsByClassName('test-log-full'), function(el) {
+    log[el.getAttribute('data-test')].dom.full = el;
+  });
+  Array.prototype.forEach.call(document.getElementsByClassName('test-log-mini'), function(el) {
+    var test = el.getAttribute('data-test');
+    log[test].dom.mini = el;
+    el.addEventListener('click', function(){
+      for(var i in log) {
+        log[i].visible = false;
+        log[i].dom.viewer.style.display = 'none';
       }
+      log[test].dom.viewer.style.display = 'block';
+      log[i].visible = true;
+      window.scroll(0,0);
     });
-    Array.prototype.forEach.call(document.getElementsByClassName('test-log-viewer'), function(el) {
-      log[el.getAttribute('data-test')].dom.viewer = el;
-    });
-    Array.prototype.forEach.call(document.getElementsByClassName('test-log-full'), function(el) {
-      log[el.getAttribute('data-test')].dom.full = el;
-    });
-    Array.prototype.forEach.call(document.getElementsByClassName('test-log-mini'), function(el) {
-      var test = el.getAttribute('data-test');
-      log[test].dom.mini = el;
-      el.addEventListener('click', function(){
-        for(var i in log) {
-          log[i].visible = false;
-          log[i].dom.viewer.style.display = 'none';
-        }
-        log[test].dom.viewer.style.display = 'block';
-        log[i].visible = true;
-        window.scroll(0,0);
+  });
+
+  if(killswitch) {
+    killswitch.addEventListener('click', function(){
+      killed = true;
+      socket.emit('run', {
+        action: 'kill',
+        SLUM: SLUM
       });
+      killswitch.style.display = 'none';
+      document.getElementById('kill-switch-done').style.display = 'block';
     });
-
-    if(killswitch) {
-      killswitch.addEventListener('click', function(){
-        killed = true;
-        socket.emit('run', {
-          action: 'kill',
-          SLUM: SLUM
-        });
-        killswitch.style.display = 'none';
-        document.getElementById('kill-switch-done').style.display = 'block';
-      });
-    }
-
-    function playMsg(msg){
-      console.log(msg);
-      if(msg.type === 'ln') {
-        ['mini', 'full'].forEach(function(size){
-          var li=document.createElement('li');
-          li.innerHTML=li.innerHTML + msg.val;
-          log[msg.test].dom[size].appendChild(li);
-        });
-        if(autoscroll && log[msg.test].visible) {
-          log[msg.test].dom.tip.scrollIntoView();
-        }
-        return;
-      }
-      if(msg.type === 'END') {
-        if(!killed && killswitch) {
-          killswitch.style.display = 'none';
-        }
-      }
-    }
-
-    if(msgs) {
-      msgs.forEach(function(msg){
-        playMsg(msg);
-      });
-    }
-
-    socket.on('error', function(err){
-      console.log(err);
-    });
-    if(SLUM) {
-      console.log('WAT');
-      socket.emit('join', SLUM);
-
-    }
-
-
-    socket.on('run', playMsg);
   }
 
+  function playMsg(msg){
+    console.log(msg);
+    if(msg.type === 'ln') {
+      ['mini', 'full'].forEach(function(size){
+        var li=document.createElement('li');
+        li.innerHTML=li.innerHTML + msg.val;
+        log[msg.test].dom[size].appendChild(li);
+      });
+      if(autoscroll && log[msg.test].visible) {
+        log[msg.test].dom.tip.scrollIntoView();
+      }
+      return;
+    }
+    if(msg.type === 'END') {
+      if(!killed && killswitch) {
+        killswitch.style.display = 'none';
+      }
+    }
+  }
 
+  if(msgs) {
+    msgs.forEach(function(msg){
+      playMsg(msg);
+    });
+  }
 
+  socket.on('error', function(err){
+    console.log(err);
+  });
+  if(SLUM) {
+    console.log('WAT');
+    socket.emit('join', SLUM);
+
+  }
+  socket.on('run', playMsg);
+}
 </script>
 
 </body>

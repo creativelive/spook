@@ -44,9 +44,7 @@ if(argv.help || argv.h || argv['?']){
 }
 
 if(argv.server) {
-  require('../server')({
-    cwd: argv.cwd
-  });
+  require('../server')(argv);
 } else if (argv.add) {
 
   var job = {};
@@ -84,6 +82,10 @@ if(argv.server) {
   argv.work = argv.work || 'series';
 
   var spook = Spook(argv, function(err, res){
+    if(err) {
+      console.log(err);
+      process.exit();
+    }
     spook.run(function(err, res) {
       if(err || !res) {
         console.log(err);

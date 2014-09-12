@@ -12,7 +12,7 @@ var minimist = require('minimist');
 var glob = require('glob');
 var fs = require('fs');
 var gm = require('gm');
-var concurrent = 1;
+var concurrent = 3;
 var q = async.queue(function(task, cb) {
   task(cb);
 }, concurrent);
