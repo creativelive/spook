@@ -82,7 +82,8 @@ h2 span {
 /* RUN CTRLS */
 .run-done {
   font-size: 2em;
-  color: #EEC625;
+  color: #585858;
+  transition: font-size 0.5s ease;
 }
 
 #run-time {
@@ -508,5 +509,5 @@ a.tip.tip-left:hover:before {
 
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
-    background-color: #66D673;
+    background-color: #585858; /* #66D673; */
 }
