@@ -5,13 +5,23 @@
 <script>
 var msgs = <%- JSON.stringify(msgs) %>;
 var queued = <%- JSON.stringify(queued) %>;
-<% if(locals.run) { %>
-var SLUM = '<%= run.SLUM %>';
-<% } %>
+var SLUM = '<% if(locals.run) { %><%= run.SLUM %><% } %>';
 </script>
 
 <script>
 var DUs = {};
+
+var killed;
+var killswitch = document.getElementById('kill-switch');
+if(killswitch) {
+  killswitch.addEventListener('click', function(){
+    killed = true;
+    socket.emit('kill', SLUM);
+    killswitch.style.display = 'none';
+    document.getElementById('kill-switch-done').style.display = 'block';
+  });
+}
+
 Array.prototype.forEach.call(document.querySelectorAll('[data-DU]'), function(el) {
   var SLUM = el.getAttribute('data-SLUM');
   DUs[SLUM] = {
@@ -57,16 +67,21 @@ socket.on('open', function(msg){
   console.log(msg);
   if(msg.type === 'END') {
     openCount.innerText = msg.open;
-    if(!DUs[msg.SLUM]) {
-      return;
+    if(SLUM && (msg.SLUM === SLUM) && (!killed && killswitch)) {
+      killswitch.style.display = 'none';
     }
-    if (DUs[msg.SLUM].dom.classList) {
-      DUs[msg.SLUM].dom.classList.add('run-done');
-    } else {
-      // IE9 compat
-      DUs[msg.SLUM].dom.className += ' ' + 'run-done';
+    if(DUs[msg.SLUM]) {
+      if(DUs[msg.SLUM].dom.innerText === 'wait'){
+        DUs[msg.SLUM].dom.innerText = 0;
+      };
+      if (DUs[msg.SLUM].dom.classList) {
+        DUs[msg.SLUM].dom.classList.add('run-done');
+      } else {
+        // IE9 compat
+        DUs[msg.SLUM].dom.className += ' ' + 'run-done';
+      }
+      delete DUs[msg.SLUM];
     }
-    delete DUs[msg.SLUM];
     return;
   }
   if(msg.type === 'STA') {
@@ -77,8 +92,7 @@ socket.on('open', function(msg){
 });
 
 
-var killed;
-var killswitch = document.getElementById('kill-switch');
+
 var runCtrls = document.getElementById('run-ctrls');
 if(runCtrls) {
   var autoscroll = true;
@@ -109,19 +123,12 @@ if(runCtrls) {
         log[i].dom.viewer.style.display = 'none';
       }
       log[test].dom.viewer.style.display = 'block';
-      log[i].visible = true;
+      log[test].visible = true;
       window.scroll(0,0);
     });
   });
 
-  if(killswitch) {
-    killswitch.addEventListener('click', function(){
-      killed = true;
-      socket.emit('kill', SLUM);
-      killswitch.style.display = 'none';
-      document.getElementById('kill-switch-done').style.display = 'block';
-    });
-  }
+
 
   function playMsg(msg){
     console.log(msg);
@@ -135,11 +142,6 @@ if(runCtrls) {
         log[msg.test].dom.tip.scrollIntoView();
       }
       return;
-    }
-    if(msg.type === 'END') {
-      if(!killed && killswitch) {
-        killswitch.style.display = 'none';
-      }
     }
   }
 

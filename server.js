@@ -83,7 +83,9 @@ module.exports = function init(opts) {
           socket.join(room);
         });
         socket.on('kill', function(SLUM) {
-          io.room[SLUM].kill();
+          if (io.room[SLUM]) {
+            io.room[SLUM].kill();
+          }
         });
 
         socket.on('disconnect', function() {

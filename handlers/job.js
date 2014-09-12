@@ -12,7 +12,7 @@ var minimist = require('minimist');
 var glob = require('glob');
 var fs = require('fs');
 var gm = require('gm');
-var concurrent = 3;
+var concurrent = 2;
 var q = async.queue(function(task, cb) {
   task(cb);
 }, concurrent);
@@ -80,7 +80,8 @@ exports.open = function(request, reply) {
   db.run.find({
     ACT: 1
   }).sort({
-    STA: -1
+    SLUG: 1,
+    NUM: 1
   }).exec(function(err, runs) {
     if (err) {
       return reply(Hapi.error.internal(err));
@@ -200,16 +201,18 @@ exports.run = function(request, reply) {
         };
 
         var task = function(qcb) {
+          var start = parseInt(+new Date() / 1000, 10);
           db.run.update({
             _id: run._id
           }, {
             $set: {
-              STA: parseInt(+new Date() / 1000, 10)
+              STA: start
             }
-          }, function(err, doc) {
+          }, function(err) {
             if (err) {
               console.log(err);
             }
+            io.room[run.SLUM].data.run.STA = start;
             io.room[run.SLUM].queued = false;
 
             console.log('open emit', run.SLUM, 'STA');
