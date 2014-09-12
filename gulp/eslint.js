@@ -6,6 +6,7 @@ module.exports = function(gulp, conf) {
   gulp.task('eslint', function() {
     return gulp.src([
         '!node_modules/**/*.js',
+        '!public/**/*.js',
         '**/*.js'
       ])
       .pipe(eslint())

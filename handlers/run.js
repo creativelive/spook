@@ -14,7 +14,6 @@ exports.detail = function(request, reply) {
   var data = cache.get(key);
 
   if(data) {
-    console.log('cache hit!');
     return reply.view('run/detail', data);
   }
 
@@ -27,7 +26,7 @@ exports.detail = function(request, reply) {
   async.parallel({
     run: function(cb){
       db.run.findOne({NUM: parseInt(request.params.num,10), ACT: { $exists: false }, SLUG: request.params.slug}, function (err, run) {
-        cb(null, run);
+        cb(err, run);
       });
     },
     log: function(cb){
@@ -35,6 +34,9 @@ exports.detail = function(request, reply) {
       var raw = '';
 
       glob(path.join(dir, '*.log'), function(err, files){
+        if(err) {
+          console.log(err);
+        }
         files.forEach(function(file){
           if(path.basename(file) === 'run.log'){
             needsCombinedRunLog = true;
@@ -48,14 +50,17 @@ exports.detail = function(request, reply) {
           }
         });
         async.parallelLimit(fns, 10, function(err, res){
-
+          if(err) {
+            console.log(err);
+          }
+          // start writing the log and move on
           if(needsCombinedRunLog) {
             fs.writeFile(path.join(dir, 'run.log'), raw, 'utf8', function(err){
-
+              if(err) {
+                console.log(err);
+              }
             });
           }
-
-
           raw = raw.replace(/PASS/g, '<span class="fg-PASS">PASS</span>')
             .replace(/WARN/g, '<span class="fg-WARN">WARN</span>')
             .replace(/FAIL/g, '<span class="fg-FAIL">FAIL</span>')
@@ -80,24 +85,20 @@ exports.detail = function(request, reply) {
     },
     job: function(cb) {
       db.job.findOne({SLUG: request.params.slug}, function (err, job) {
-        cb(null, job);
+        cb(err, job);
       });
     }
   }, function(err, res) {
 
-    // if(err) {
-    //   return reply(Hapi.error.internal(err));
-    // }
+    if(err) {
+      return reply(Hapi.error.internal(err));
+    }
     if(!res.run) {
       return reply(Hapi.error.notFound('run not found'));
     }
 
     // populate mask for thumbnails path
     res.run.MASK = mask;
-
-    if(res.run.ACT) {
-      // run in-progress
-    }
 
     data = {
       job: res.job,
@@ -108,5 +109,4 @@ exports.detail = function(request, reply) {
     cache.set(key, data);
     reply.view('run/detail', data);
   });
-
 };
