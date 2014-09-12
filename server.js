@@ -57,8 +57,8 @@ module.exports = function init(opts) {
   // db
   require('./lib/db')({
     runPath: server.settings.app.runPath
-  }, function(err, res){
-    if(err) {
+  }, function(err, res) {
+    if (err) {
       console.log(err);
       return;
     }
@@ -68,9 +68,7 @@ module.exports = function init(opts) {
     server.route(require('./routes'));
     server.ext('onPreResponse', require('./server/onPreResponse'));
 
-
-
-    server.start(function(){
+    server.start(function() {
       console.log(chalk.blue('[spook] server started on port', opts.port));
 
       // io.namespace.run = {};
@@ -89,13 +87,12 @@ module.exports = function init(opts) {
       //   });
       // });
 
-
-      io.server.on('connection', function(socket){
+      io.server.on('connection', function(socket) {
         console.log('user join io');
         socket.on('join', function(room) {
           socket.join(room);
         });
-        socket.on('disconnect', function(){
+        socket.on('disconnect', function() {
           console.log('user left io');
         });
       });

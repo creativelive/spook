@@ -8,7 +8,8 @@ module.exports = function(gulp, conf) {
   gulp.task('beautify', function() {
     var task = gulp.src([
         '!node_modules/**/*.js',
-        '**/*js'
+        '!public/**/*.js',
+        '**/*.js'
       ], {
         base: './'
       })

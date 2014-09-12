@@ -13,7 +13,7 @@ exports.detail = function(request, reply) {
   var key = request.params.slug + '-' + request.params.num;
   var data = cache.get(key);
 
-  if(data) {
+  if (data) {
     return reply.view('run/detail', data);
   }
 
@@ -24,39 +24,45 @@ exports.detail = function(request, reply) {
   var dir = path.join(request.server.settings.app.runPath, request.params.slug, mask);
   var images = [];
   async.parallel({
-    run: function(cb){
-      db.run.findOne({NUM: parseInt(request.params.num,10), ACT: { $exists: false }, SLUG: request.params.slug}, function (err, run) {
+    run: function(cb) {
+      db.run.findOne({
+        NUM: parseInt(request.params.num, 10),
+        ACT: {
+          $exists: false
+        },
+        SLUG: request.params.slug
+      }, function(err, run) {
         cb(err, run);
       });
     },
-    log: function(cb){
+    log: function(cb) {
       var fns = [];
       var raw = '';
 
-      glob(path.join(dir, '*.log'), function(err, files){
-        if(err) {
+      glob(path.join(dir, '*.log'), function(err, files) {
+        if (err) {
           console.log(err);
         }
-        files.forEach(function(file){
-          if(path.basename(file) === 'run.log'){
+        files.forEach(function(file) {
+          if (path.basename(file) === 'run.log') {
             needsCombinedRunLog = true;
           } else {
-            fns.push(function(cb){
-              fs.readFile(file, 'utf8', function(err, data){
+            fns.push(function(cb) {
+              fs.readFile(file, 'utf8', function(err, data) {
                 raw += data + '\n';
                 cb(err);
               });
             });
           }
         });
-        async.parallelLimit(fns, 10, function(err, res){
-          if(err) {
+        async.parallelLimit(fns, 10, function(err, res) {
+          if (err) {
             console.log(err);
           }
           // start writing the log and move on
-          if(needsCombinedRunLog) {
-            fs.writeFile(path.join(dir, 'run.log'), raw, 'utf8', function(err){
-              if(err) {
+          if (needsCombinedRunLog) {
+            fs.writeFile(path.join(dir, 'run.log'), raw, 'utf8', function(err) {
+              if (err) {
                 console.log(err);
               }
             });
@@ -84,16 +90,18 @@ exports.detail = function(request, reply) {
       });
     },
     job: function(cb) {
-      db.job.findOne({SLUG: request.params.slug}, function (err, job) {
+      db.job.findOne({
+        SLUG: request.params.slug
+      }, function(err, job) {
         cb(err, job);
       });
     }
   }, function(err, res) {
 
-    if(err) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
-    if(!res.run) {
+    if (!res.run) {
       return reply(Hapi.error.notFound('run not found'));
     }
 

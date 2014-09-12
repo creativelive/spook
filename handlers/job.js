@@ -13,16 +13,22 @@ var glob = require('glob');
 var fs = require('fs');
 var gm = require('gm');
 var concurrent = 1;
-var q = async.queue(function (task, cb) {
+var q = async.queue(function(task, cb) {
   task(cb);
 }, concurrent);
 
 exports.act = function(request, reply) {
-  db.run.findOne({SLUG: request.params.slug, NUM: parseInt(request.params.num, 10), ACT: { $exists: true }}, function (err, run) {
-    if(err) {
+  db.run.findOne({
+    SLUG: request.params.slug,
+    NUM: parseInt(request.params.num, 10),
+    ACT: {
+      $exists: true
+    }
+  }, function(err, run) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
-    if(!run || !io.room[run.SLUM]) {
+    if (!run || !io.room[run.SLUM]) {
       return reply.redirect('/' + path.join('job', request.params.slug, request.params.num));
     }
     var data = io.room[run.SLUM].data;
@@ -38,20 +44,29 @@ exports.act = function(request, reply) {
 
 exports.list = function(request, reply) {
   var fns = [];
-  db.job.find({}).sort({ SLUG: 1}).exec(function (err, jobs) {
-    if(err) {
+  db.job.find({}).sort({
+    SLUG: 1
+  }).exec(function(err, jobs) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
-    jobs.forEach(function(job){
-      fns.push(function(cb){
-        db.run.find({SLUG: job.SLUG, ACT: { $exists: false }}).sort({ NUM: -1 }).limit(5).exec(function (err, runs) {
+    jobs.forEach(function(job) {
+      fns.push(function(cb) {
+        db.run.find({
+          SLUG: job.SLUG,
+          ACT: {
+            $exists: false
+          }
+        }).sort({
+          NUM: -1
+        }).limit(5).exec(function(err, runs) {
           job.runs = runs;
           cb(err, job);
         });
       });
     });
     async.parallel(fns, function(err) {
-      if(err) {
+      if (err) {
         return reply(Hapi.error.internal(err));
       }
       reply.view('job/list', {
@@ -62,8 +77,12 @@ exports.list = function(request, reply) {
 };
 
 exports.open = function(request, reply) {
-  db.run.find({ACT: 1}).sort({ STA: -1 }).exec(function (err, runs) {
-    if(err) {
+  db.run.find({
+    ACT: 1
+  }).sort({
+    STA: -1
+  }).exec(function(err, runs) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
     reply.view('job/open', {
@@ -74,21 +93,27 @@ exports.open = function(request, reply) {
 
 exports.runs = function(request, reply) {
   async.parallel({
-    job: function(cb){
-      db.job.findOne({ SLUG: request.params.slug }, function (err, job) {
+    job: function(cb) {
+      db.job.findOne({
+        SLUG: request.params.slug
+      }, function(err, job) {
         cb(err, job);
       });
     },
-    runs: function(cb){
-      db.run.find({ SLUG: request.params.slug }).sort({ NUM: -1 }).exec(function (err, runs) {
+    runs: function(cb) {
+      db.run.find({
+        SLUG: request.params.slug
+      }).sort({
+        NUM: -1
+      }).exec(function(err, runs) {
         cb(err, runs);
       });
     }
-  }, function(err, res){
-    if(err) {
+  }, function(err, res) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
-    if(!res.job) {
+    if (!res.job) {
       return reply(Hapi.error.notFound('job not found'));
     }
     reply.view('job/runs', {
@@ -107,16 +132,20 @@ exports.run = function(request, reply) {
   var mask;
 
   async.series({
-    job: function(cb){
-      db.job.findOne({ SLUG: request.params.slug }, function (err, doc) {
+    job: function(cb) {
+      db.job.findOne({
+        SLUG: request.params.slug
+      }, function(err, doc) {
         job = doc;
         cb(err);
       });
     },
     run: function(cb) {
       // prepare a new run doc in the db
-      db.run.count({ SLUG: request.params.slug }, function (err, count) {
-        if(err) {
+      db.run.count({
+        SLUG: request.params.slug
+      }, function(err, count) {
+        if (err) {
           return cb(err);
         }
         run.NUM = ++count;
@@ -134,7 +163,7 @@ exports.run = function(request, reply) {
       });
     }
   }, function(err) {
-    if(err) {
+    if (err) {
       return reply(Hapi.error.internal(err));
     }
     var argv = minimist(job.CMD.split(' '));
@@ -142,14 +171,14 @@ exports.run = function(request, reply) {
     argv.record = true;
     argv.out = path.join(request.server.settings.app.runPath, job.SLUG, mask);
     argv.work = 'parallel';
-    mkdirp(argv.out, function (err) {
-      if(err) {
+    mkdirp(argv.out, function(err) {
+      if (err) {
         return reply(Hapi.error.internal(err));
       }
       argv.record = true;
 
-      var spook = Spook(argv, function(err, res){
-        if(err) {
+      var spook = Spook(argv, function(err, res) {
+        if (err) {
           return reply(Hapi.error.internal(err));
         }
         var tests = res.tests;
@@ -163,15 +192,21 @@ exports.run = function(request, reply) {
           msgs: []
         };
 
-        argv.listener = function listener(msg){
+        argv.listener = function listener(msg) {
           console.log('emit ln to', run.SLUM);
           io.room[run.SLUM].msgs.push(msg);
           io.server.in(run.SLUM).emit('run', msg);
         };
 
         var task = function(qcb) {
-          db.run.update({_id: run._id}, {$set: {STA: parseInt(+new Date() / 1000, 10)}}, function(err, doc) {
-            if(err) {
+          db.run.update({
+            _id: run._id
+          }, {
+            $set: {
+              STA: parseInt(+new Date() / 1000, 10)
+            }
+          }, function(err, doc) {
+            if (err) {
               console.log(err);
             }
             io.room[run.SLUM].queued = false;
@@ -183,15 +218,18 @@ exports.run = function(request, reply) {
               open: Object.keys(io.room).length || 0
             });
 
-            spook.run(function(err, res){
-              if(err) {
+            spook.run(function(err, res) {
+              if (err) {
                 console.log(err);
               }
               res.NUM = run.NUM;
               res.SLUM = run.SLUM;
               res.SLUG = run.SLUG;
-              db.run.update({SLUG:run.SLUG, NUM:run.NUM}, res, function(err, numReplaced, doc) {
-                if(err) {
+              db.run.update({
+                SLUG: run.SLUG,
+                NUM: run.NUM
+              }, res, function(err, numReplaced, doc) {
+                if (err) {
                   console.log(err);
                 }
                 delete io.room[run.SLUM];
@@ -209,14 +247,14 @@ exports.run = function(request, reply) {
                 // make some thumbnail images (don't wait for callback, we'll fire and forget)
                 glob('*.jpg', {
                   cwd: argv.out
-                }, function (err, images) {
-                  if(err) {
+                }, function(err, images) {
+                  if (err) {
                     console.log(err);
                   }
                   var gms = [];
-                  if(images) {
-                    images.forEach(function(img){
-                      gms.push(function(cb){
+                  if (images) {
+                    images.forEach(function(img) {
+                      gms.push(function(cb) {
                         var rs = fs.createReadStream(path.join(argv.out, img));
                         var ws = fs.createWriteStream(path.join(argv.out, 'thumb.' + img));
                         gm(rs)
@@ -232,7 +270,7 @@ exports.run = function(request, reply) {
                   }
                   // fire and forget generating thumbnails
                   async.parallelLimit(gms, 10, function(err) {
-                    if(err) {
+                    if (err) {
                       console.log(err);
                     }
                   });
@@ -250,7 +288,7 @@ exports.run = function(request, reply) {
           msgs: io.room[run.SLUM].msgs
         });
 
-        setTimeout(function(){
+        setTimeout(function() {
           q.push(task);
         }, 1000);
 

@@ -21,8 +21,8 @@ module.exports = function(request, reply) {
     context.openCount = Object.keys(io.room).length || 0;
 
     context.queued = {};
-    for(var run in io.room) {
-      if(io.room[run].queued) {
+    for (var run in io.room) {
+      if (io.room[run].queued) {
         context.queued[run] = true;
       }
     }
