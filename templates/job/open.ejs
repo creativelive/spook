@@ -1,12 +1,8 @@
-<%
-if(runs.length) {
+<% if(runs.length) {
   locals.subtitle = 'open runs'
 } else {
   locals.subtitle = 'no open runs'
-}
-%>
-
-
+} %>
 
 <% include ../header %>
 <div class="pure-u-1-1">
@@ -30,5 +26,4 @@ if(runs.length) {
 </table>
 
 </div>
-
 <% include ../footer %>

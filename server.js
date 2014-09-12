@@ -68,22 +68,36 @@ module.exports = function init(opts) {
     server.route(require('./routes'));
     server.ext('onPreResponse', require('./server/onPreResponse'));
 
-    server.app.pio = {};
+
 
     server.start(function(){
       console.log(chalk.blue('[spook] server started on port', opts.port));
 
-      io.namespace.run = {};
-      io.namespace.open = {
-        server: io.server.of('/open'),
-        data: {}
-      };
-      io.namespace.open.fn = {};
-      io.namespace.open.fn.count = function() {
-        return Object.keys(io.namespace.open.data).length || 0;
-      };
-      io.namespace.open.server.on('connection', function(socket){
-        socket.on('disconnect', function(){});
+      // io.namespace.run = {};
+      // io.namespace.open = {
+      //   server: io.server.of('/open'),
+      //   data: {}
+      // };
+      // io.namespace.open.fn = {};
+      // io.namespace.open.fn.count = function() {
+      //   return Object.keys(io.namespace.open.data).length || 0;
+      // };
+      // io.namespace.open.server.on('connection', function(socket){
+      //   console.log('user join open');
+      //   socket.on('disconnect', function(){
+      //     console.log('user left open');
+      //   });
+      // });
+
+
+      io.server.on('connection', function(socket){
+        console.log('user join io');
+        socket.on('join', function(room) {
+          socket.join(room);
+        });
+        socket.on('disconnect', function(){
+          console.log('user left io');
+        });
       });
 
     });

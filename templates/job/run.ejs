@@ -1,130 +1,27 @@
-<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a> <a href="/job/' + job.SLUG + '/' +run.NUM + '">#' + run.NUM +'</a>' %>
+<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a> <a href="/open/' + job.SLUG + '/' +run.NUM + '">#' + run.NUM +'</a>' %>
 <% locals.ctrls = true; %>
 
 <% include ../header %>
 
 <div class="pure-u-1-4 logs">
-
-<div class="log log-mini">
-<% tests.forEach(function(test){ %>
-<h2><%= test %></h2>
-<ul data-test="<%= test %>" class="test-log-mini"></ul>
-<% }) %>
-</div>
-
+  <div class="log log-mini">
+  <% tests.forEach(function(test){ %>
+    <h2><%= test %></h2>
+    <ul data-test="<%= test %>" class="test-log-mini"></ul>
+  <% }) %>
+  </div>
 </div>
 
 <div class="pure-u-3-4 logs">
-
-<% if(queued[run.SLUM]) { %>
-<p>you task is queued and will begin shortly</p>
-<% } %>
-
-<div class="log log-full">
-<% tests.forEach(function(test){ %>
-<div data-test="<%= test %>" class="test-log-viewer">
-<h2><%= test %></h2>
-<ul data-test="<%= test %>" class="test-log-full"></ul>
-<span data-test="<%= test %>" class="test-tip"></span>
-</div>
-<% }) %>
+  <div class="log log-full">
+  <% tests.forEach(function(test){ %>
+    <div data-test="<%= test %>" class="test-log-viewer">
+      <h2><%= test %></h2>
+      <ul data-test="<%= test %>" class="test-log-full"></ul>
+      <span data-test="<%= test %>" class="test-tip"></span>
+    </div>
+  <% }) %>
+  </div>
 </div>
 
-
-</div>
-
-<% if(locals.msgs) { %>
-<script>
-var msgs = <%- JSON.stringify(msgs) %>;
-</script>
-<% } %>
-
-<script>
-  (function(){
-    var killed;
-
-    var socket = io('http://localhost:3000/<%= run.SLUM %>');
-    var killswitch = document.getElementById('kill-switch');
-
-    var runCtrls = document.getElementById('run-ctrls');
-    if(runCtrls) {
-      var autoscroll = true;
-      var log = {};
-      document.getElementById('auto-scroll').addEventListener('click', function(){
-        autoscroll = !autoscroll;
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('test-tip'), function(el) {
-        log[el.getAttribute('data-test')] = {
-          dom: {
-            tip: el
-          },
-          visible: false
-        }
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('test-log-viewer'), function(el) {
-        log[el.getAttribute('data-test')].dom.viewer = el;
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('test-log-full'), function(el) {
-        log[el.getAttribute('data-test')].dom.full = el;
-      });
-      Array.prototype.forEach.call(document.getElementsByClassName('test-log-mini'), function(el) {
-        var test = el.getAttribute('data-test');
-        log[test].dom.mini = el;
-        el.addEventListener('click', function(){
-          for(var i in log) {
-            log[i].visible = false;
-            log[i].dom.viewer.style.display = 'none';
-          }
-          log[test].dom.viewer.style.display = 'block';
-          log[i].visible = true;
-          window.scroll(0,0);
-        });
-      });
-
-      if(killswitch) {
-        killswitch.addEventListener('click', function(){
-          killed = true;
-          socket.emit('run', {
-            action: 'kill',
-            SLUM: '<%= run.SLUM %>'
-          });
-          killswitch.style.display = 'none';
-          document.getElementById('kill-switch-done').style.display = 'block';
-        });
-      }
-
-      function playMsg(msg){
-        console.log(msg);
-        if(msg.type === 'ln') {
-          ['mini', 'full'].forEach(function(size){
-            var li=document.createElement('li');
-            li.innerHTML=li.innerHTML + msg.val;
-            log[msg.test].dom[size].appendChild(li);
-          });
-          if(autoscroll && log[msg.test].visible) {
-            log[msg.test].dom.tip.scrollIntoView();
-          }
-          return;
-        }
-        if(msg.type === 'END') {
-          if(!killed && killswitch) {
-            killswitch.style.display = 'none';
-          }
-        }
-      }
-
-      if(msgs) {
-        msgs.forEach(function(msg){
-          playMsg(msg);
-        });
-      }
-
-      socket.on('run', playMsg);
-    }
-
-  }())
-</script>
-
-
-</div>
 <% include ../footer %>

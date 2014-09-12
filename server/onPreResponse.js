@@ -19,18 +19,18 @@ module.exports = function(request, reply) {
     // make moment available to ejs templates
     context.moment = moment;
     context.now = moment().unix();
-    context.openCount = io.namespace.open.fn.count();
+    context.openCount = Object.keys(io.room).length || 0;
 
     context.queued = {};
-    for(var run in io.namespace.run) {
-      if(io.namespace.run[run].queued) {
+    for(var run in io.room) {
+      if(io.room[run].queued) {
         context.queued[run] = true;
       }
     }
 
-    console.log('OPEN:', context.openCount);
-    console.log('QUEUED:', Object.keys(context.queued).length);
-    console.log('context.openCount:', context.openCount);
+    // console.log('OPEN:', context.openCount);
+    // console.log('QUEUED:', Object.keys(context.queued).length);
+    // console.log('context.openCount:', context.openCount);
 
 
     if (response.isBoom) {
