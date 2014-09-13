@@ -150,6 +150,29 @@ h2 span {
   font-size: 1.4em;
 }
 
+/* PANELS */
+.panel {
+  text-align: center;
+  min-height: 500px;
+  background-position: center 10%;
+  background-size: 80%;
+  background-repeat:no-repeat;
+}
+
+.error-panel {
+  background-image: url('/img/DEAD.png');
+}
+
+.not-found-panel {
+  background-image:url('/img/FAIL.png');
+}
+
+.panel h2 {
+  font-size: 4em;
+  margin: 0;
+  padding: 0;
+}
+
 /* RUN TABLE*/
 table {
   width: 100%;

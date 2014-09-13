@@ -33,6 +33,8 @@ module.exports = function(request, reply) {
       var templates = {
         404: 'error/404'
       };
+      context.msg = response.message;
+      context.code = response.output.statusCode;
       return reply.view(templates[response.output.statusCode] || 'error/500', context).code(response.output.statusCode);
     }
   }
