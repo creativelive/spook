@@ -7,21 +7,12 @@ var db = require('../lib/db');
 var runner = require('../lib/runner');
 
 exports.act = function(request, reply) {
-  db.run.findOne({
-    SLUG: request.params.slug,
-    NUM: parseInt(request.params.num, 10),
-    ACT: {
-      $exists: true
-    }
-  }, function(err, run) {
-    if (err) {
-      return reply(Hapi.error.internal(err));
-    }
-    if (!run || !runner.open[run.SLUM]) {
-      return reply.redirect('/' + path.join('job', request.params.slug, request.params.num));
-    }
-    reply.view('job/run', runner.open[run.SLUM].data);
-  });
+  var SLUM = request.params.slug + '-' + request.params.num;
+  if (runner.open[SLUM]) {
+    reply.view('job/run', runner.open[SLUM].data);
+  } else {
+    reply.redirect('/' + path.join('job', request.params.slug, request.params.num));
+  }
 };
 
 exports.list = function(request, reply) {
@@ -59,18 +50,12 @@ exports.list = function(request, reply) {
 };
 
 exports.open = function(request, reply) {
-  db.run.find({
-    ACT: 1
-  }).sort({
-    SLUG: 1,
-    NUM: 1
-  }).exec(function(err, runs) {
-    if (err) {
-      return reply(Hapi.error.internal(err));
-    }
-    reply.view('job/open', {
-      runs: runs
-    });
+  var runs = [];
+  for (var run in runner.open) {
+    runs.push(runner.open[run].data.run);
+  }
+  reply.view('job/open', {
+    runs: runs
   });
 };
 
