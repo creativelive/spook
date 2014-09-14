@@ -45,6 +45,9 @@ h1 {
 h2 span {
   font-size: 60%;
   font-weight: normal;
+}
+
+h2 span:first-child {
   padding-left: 10px;
 }
 
