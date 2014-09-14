@@ -21,7 +21,7 @@ module.exports = function(request, reply) {
     context.msgs = context.msgs || [];
     context.queued = runner.queued();
     context.openCount = Object.keys(runner.open).length || 0;
-    console.log(context);
+
     if (response.isBoom) {
       context.err = (response.output.statusCode === 404 ? 'Page not found' : 'Something went wrong');
       var templates = {
