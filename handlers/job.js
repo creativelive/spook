@@ -109,7 +109,7 @@ exports.runs = function(request, reply) {
 exports.run = function(request, reply) {
   runner.run({
     SLUG: request.params.slug
-  }, function(err, res){
+  }, function(err, res) {
     if (err) {
       return reply(Hapi.error.internal(err));
     }

@@ -83,8 +83,6 @@ module.exports = function init(opts) {
     server.start(function() {
       console.log(chalk.blue('[spook] server started on port', opts.port));
 
-
-
     });
   });
 
