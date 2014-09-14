@@ -51,12 +51,11 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-END]'), function(e
   });
 });
 
-var now = parseInt(+new Date() / 1000, 10);
-
 if(ENDs.length) {
   var EndInterval = setInterval(function(){
+    var now = parseInt(+new Date() / 1000, 10);
     ENDs.forEach(function(END){
-      END.dom.innerText = moment.duration((END.val - now), 'seconds').humanize(true)
+      END.dom.innerText = 'ran ' + moment.duration((END.val - now), 'seconds').humanize(true)
     })
   }, 60000);
 }

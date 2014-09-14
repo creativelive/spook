@@ -1,4 +1,4 @@
-<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a> <a href="/job/' + job.SLUG + '/' +run.NUM + '">#' + run.NUM +'<span>ran ' + moment.duration((run.END - now), 'seconds').humanize(true) + '</span></a>' %>
+<% locals.subtitle = '<a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a> <a href="/job/' + job.SLUG + '/' +run.NUM + '">#' + run.NUM +'<span data-END="' + run.END + '" data-SLUM="' + run.SLUM + '">ran ' + moment.duration((run.END - now), 'seconds').humanize(true) + '</span></a>' %>
 
 <% include ../header %>
 <div class="pure-u-1-1">
