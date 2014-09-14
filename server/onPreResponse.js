@@ -19,8 +19,12 @@ module.exports = function(request, reply) {
     context.moment = moment;
     context.now = moment().unix();
     context.msgs = context.msgs || [];
-    context.queued = runner.queued();
+
     context.openCount = Object.keys(runner.open).length || 0;
+
+
+    context.queued = runner.queued();
+
 
     if (response.isBoom) {
       context.err = (response.output.statusCode === 404 ? 'Page not found' : 'Something went wrong');
