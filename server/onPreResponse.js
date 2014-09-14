@@ -1,7 +1,7 @@
 'use strict';
 
 var moment = require('moment');
-var io = require('../lib/io');
+var runner = require('../lib/runner');
 
 module.exports = function(request, reply) {
   // pre-populate view context
@@ -18,18 +18,12 @@ module.exports = function(request, reply) {
 
     context.moment = moment;
     context.now = moment().unix();
-    context.openCount = Object.keys(io.room).length || 0;
-
-    context.queued = {};
     context.msgs = context.msgs || [];
-    for (var run in io.room) {
-      if (io.room[run].queued) {
-        context.queued[run] = true;
-      }
-    }
-
+    context.queued = runner.queued();
+    context.openCount = Object.keys(runner.open).length || 0;
+    console.log(context);
     if (response.isBoom) {
-      context.err = (response.output.statusCode === 404 ? 'page not found' : 'something went wrong');
+      context.err = (response.output.statusCode === 404 ? 'Page not found' : 'Something went wrong');
       var templates = {
         404: 'error/404'
       };

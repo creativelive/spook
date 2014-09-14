@@ -33,7 +33,7 @@ module.exports = function init(opts) {
   var server = new Hapi.Server('localhost', opts.port, serverOpts);
 
   server.settings.app = opts;
-  server.settings.app.runPath = path.join(opts.cwd, 'run');
+  server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
 
   // logging
   server.on('request', function(request, event) {
@@ -56,20 +56,26 @@ module.exports = function init(opts) {
   });
 
   // io
-  var io = require('./lib/io')(server.listener);
+  require('./lib/io')(server.listener);
 
   // db
   require('./lib/db')({
-    runPath: server.settings.app.runPath
+    dbd: server.settings.app.dbd
   }, function(err, res) {
     if (err) {
       console.log(err);
       return;
     }
-    server.app.db = res;
+    // setup the runner
+    require('./lib/runner')({
+      cwd: server.settings.app.cwd,
+      dbd: server.settings.app.dbd,
+      concurrent: server.settings.app.concurrent
+    });
+
     server.route(require('./routes/static'));
     server.route(require('./routes/runnables')({
-      runPath: server.settings.app.runPath
+      dbd: server.settings.app.dbd
     }));
     server.route(require('./routes'));
     server.ext('onPreResponse', require('./server/onPreResponse'));
@@ -77,21 +83,7 @@ module.exports = function init(opts) {
     server.start(function() {
       console.log(chalk.blue('[spook] server started on port', opts.port));
 
-      io.server.on('connection', function(socket) {
-        console.log('user join io');
-        socket.on('join', function(room) {
-          socket.join(room);
-        });
-        socket.on('kill', function(SLUM) {
-          if (io.room[SLUM]) {
-            io.room[SLUM].kill();
-          }
-        });
 
-        socket.on('disconnect', function() {
-          console.log('user left io');
-        });
-      });
 
     });
   });

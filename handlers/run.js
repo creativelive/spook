@@ -21,7 +21,7 @@ exports.detail = function(request, reply) {
   var mask = pad(4, request.params.num, '0');
   mask = path.join(mask.substr(0, 2), mask.substr(2));
 
-  var dir = path.join(request.server.settings.app.runPath, request.params.slug, mask);
+  var dir = path.join(request.server.settings.app.dbd, request.params.slug, mask);
   var images = [];
   async.parallel({
     run: function(cb) {

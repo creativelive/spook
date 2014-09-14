@@ -61,7 +61,7 @@ if(argv.server) {
   job.CMD += '-- ' + argv._.join(' ');
 
   require('../lib/db')({
-    runPath: argv.out || process.cwd()
+    dbd: argv.out || process.cwd()
   }, function(err, db){
     if(err) {
       console.log(err);
