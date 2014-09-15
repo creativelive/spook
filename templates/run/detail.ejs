@@ -3,6 +3,7 @@
 <% include ../header %>
 <div class="pure-u-1-1">
 
+<div class="runs-table-responsive">
 <table class="runs">
   <thead>
   <tr>
@@ -43,8 +44,8 @@
       <td class="info time"><%= TE.DU %>&nbsp;</td>
     </tr>
   <% } %>
-
 </table>
+</div>
 
 <h2>Log <a href="/file/<%= job.SLUG %>/<%= run.MASK %>/run.log"><span>[view raw]</span></a></h2>
 <div class="log">

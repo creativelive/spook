@@ -19,9 +19,7 @@ module.exports = function(request, reply) {
     context.moment = moment;
     context.now = moment().unix();
     context.msgs = context.msgs || [];
-
-    context.openCount = Object.keys(runner.open).length || 0;
-
+    context.open = Object.keys(runner.open).length || 0;
     context.queued = runner.queued();
 
     if (response.isBoom) {

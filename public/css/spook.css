@@ -57,7 +57,7 @@ h2 span:first-child {
   position:fixed;
   top: 0;
   width: 100%;
-  padding: 2px 0px 0px 0px;
+  padding: 3px 0px 0px 0px;
   background-color: #FFF;
   -moz-box-shadow: 0px 5px 5px #FFF;
   -webkit-box-shadow: 0px 5px 5px #FFF;
@@ -140,7 +140,7 @@ h2 span:first-child {
   width: 65px;
 }
 
-#open {
+#open-banner {
   width: 45px;
   margin: 10px 0px;
   padding: 4px 5px;
@@ -180,6 +180,15 @@ h2 span:first-child {
 table {
   width: 100%;
   border-bottom: 2px solid #333;
+}
+
+table.runs {
+  min-width: 950px;
+}
+
+.runs-table-responsive {
+  min-width: 800px;
+  overflow: scroll;
 }
 
 tbody tr {
@@ -536,4 +545,37 @@ a.tip.tip-left:hover:before {
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
     background-color: #585858; /* #66D673; */
+}
+
+/* NGPROGESS */
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #29d;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
 }

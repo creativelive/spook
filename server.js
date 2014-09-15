@@ -30,7 +30,7 @@ module.exports = function init(opts) {
     };
     serverOpts.views.isCached = false;
   }
-  var server = new Hapi.Server('localhost', opts.port, serverOpts);
+  var server = new Hapi.Server('0.0.0.0', opts.port, serverOpts);
 
   server.settings.app = opts;
   server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
