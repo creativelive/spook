@@ -223,7 +223,14 @@ td.count {
 }
 
 td.run {
-  width: 50px;
+  width: 60px;
+}
+
+td.run span {
+  padding: 5px;
+  background-color: #FFD700;
+  color: #000;
+  font-size: 1.2em;
 }
 
 td.run img {
