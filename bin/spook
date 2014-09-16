@@ -15,7 +15,7 @@ function ghost(msg) {
     return;
   }
   console.log(' ____');
-  console.log('|░▒░▒|', msg);
+  console.log('|░▒░▒|', (msg || ''));
   console.log('|░▓░░|');
   console.log('|░░░░|');
   console.log('|/\\|\\|');
@@ -36,6 +36,7 @@ function help() {
     .concat('--tests tests to run')
     .concat('--record record the run output')
     ;util.puts(usage.join('\n'));
+    ghost();
     process.exit();
 }
 
