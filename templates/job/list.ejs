@@ -19,7 +19,7 @@
   <% if(job.runs.length) { var run = job.runs[0]; %>
     <td class="state badge"><a class="tip tip-left" data-tip="#<%= run.NUM %>" href="/job/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>
 
-    <td class="run"><a class="tip tip-right" data-tip="run <%= job.ALIAS %>" href="/job/<%= job.SLUG %>/run"><span>RUN</span></a></td>
+    <td class="run"><a href="/job/<%= job.SLUG %>/run"><span class="run">RUN</span></a></td>
 
     <td class="job"><a href="/job/<%= job.SLUG %>"><%= job.ALIAS %><a/></td>
     <td></td>
@@ -33,7 +33,7 @@
     </td>
   <% } else { %>
     <td class="state badge"></td>
-    <td class="run"><a class="tip tip-right" data-tip="run <%= job.ALIAS %>" href="/job/<%= job.SLUG %>/run"><span>RUN</span></a></td>
+    <td class="run"><a href="/job/<%= job.SLUG %>/run"><span class="run">RUN</span></a></td>
     <td class="job"><a href="/job/<%= job.SLUG %>"><%= job.ALIAS %><a/></td>
     <td colspan="4"></td>
   <% } %>

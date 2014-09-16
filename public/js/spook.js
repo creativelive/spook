@@ -10,7 +10,7 @@
 });
 
 // join socket
-var socket = io(location.protocol + '//' + location.hostname + (location.port ? ':' + location.port: ''));
+var socket = io(location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : ''));
 
 // track global open runs
 var openCount = document.getElementById('open-count');
@@ -133,6 +133,12 @@ if(ACT) {
       });
     });
 
+    // results
+    var result = {
+      img: document.getElementById('run-result-img'),
+      span: document.getElementById('run-result-span')
+    };
+
     // if loading an open run with a dumped set of messages, play them out
     if(msgs) {
       msgs.forEach(function(msg){
@@ -176,6 +182,11 @@ socket.on('open', function(msg){
       }
       // remove the duration timer
       delete DUs[msg.SLUM];
+    }
+    if(ACT && msg.SLUM === SLUM) {
+      result.span.innerText = msg.ST;
+      result.img.src = '/img/' + msg.ST + '.png';
+      result.span.className = 'bg-' + msg.ST;
     }
     return;
   }

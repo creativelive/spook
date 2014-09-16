@@ -98,6 +98,24 @@ h2 span:first-child {
   display: inline;
 }
 
+#run-result {
+  width: 100px;
+}
+
+#run-result span {
+  text-align: center;
+  width: 45px;
+  margin: 10px 0px;
+  padding: 5px 5px;
+  display:inline-block;
+}
+
+#run-result img {
+  width: 40px;
+  float: left;
+  margin-top: 2px
+}
+
 #scroll-ctrl {
   display: inline-block;
 }
@@ -226,11 +244,17 @@ td.run {
   width: 60px;
 }
 
-td.run span {
+span.run {
   padding: 5px;
   background-color: #FFD700;
   color: #000;
   font-size: 1.2em;
+}
+
+h2 span.run {
+  font-size: 0.9em;
+  margin-right: 10px;
+  padding: 4px 6px;
 }
 
 td.run img {
