@@ -70,7 +70,8 @@ module.exports = function init(opts) {
     require('./lib/runner')({
       cwd: server.settings.app.cwd,
       dbd: server.settings.app.dbd,
-      concurrent: server.settings.app.concurrent
+      concurrent: server.settings.app.concurrent,
+      'parallel-limit': server.settings.app['parallel-limit']
     });
 
     server.route(require('./routes/static'));

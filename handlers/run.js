@@ -76,10 +76,8 @@ exports.detail = function(request, reply) {
               images.push(p1);
               return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/thumb.' + p1 + ');background-size: cover;"></div>' + p1 + '</a>';
             })
-            .replace(/Test file\: (.*)/g, function(match, p1) {
-              var split = p1.split('/').slice(-3);
-              var name = split.join('/');
-              return '<a class="anchor" name="' + split[1] + '">' + name + '</a><b>' + name + '</b>';
+            .replace(/\[TEST\] (.*)/g, function(match, p1) {
+              return '<a class="anchor" name="test-' + p1 + '">' + p1 + '</a><b>' + p1 + '</b>';
             })
             .replace(/\[error\] \[phantom\]/g, '<span class="fg-FAIL">error</span> [phantom]')
             .replace(/ {2}/g, '&nbsp;')
