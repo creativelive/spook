@@ -3,24 +3,28 @@
 
 <% include ../header %>
 
-<div class="pure-u-1-4 logs">
-  <div class="log log-mini">
-  <% tests.forEach(function(test){ %>
-    <h2><%= test %></h2>
-    <ul data-test="<%= test %>" class="test-log-mini"></ul>
-  <% }) %>
+<div class="pure-u-1-4">
+  <div class="logs">
+    <div class="log log-mini">
+    <% tests.forEach(function(test){ %>
+      <h2><%= test %></h2>
+      <ul data-test="<%= test %>" class="test-log-mini"></ul>
+    <% }) %>
+    </div>
   </div>
   <hr>
 </div>
 
-<div class="pure-u-3-4 logs">
-  <div class="log log-full">
-  <% tests.forEach(function(test){ %>
-    <div data-test="<%= test %>" class="test-log-viewer">
-      <h2><%= test %></h2>
-      <ul data-test="<%= test %>" class="test-log-full"></ul>
+<div class="pure-u-3-4">
+  <div class="logs">
+    <div class="log log-full">
+    <% tests.forEach(function(test){ %>
+      <div data-test="<%= test %>" class="test-log-viewer">
+        <h2><%= test %></h2>
+        <ul data-test="<%= test %>" class="test-log-full"></ul>
+      </div>
+    <% }) %>
     </div>
-  <% }) %>
   </div>
   <hr>
 </div>

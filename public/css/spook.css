@@ -409,27 +409,20 @@ a.tip.tip-left:hover:before {
   margin-top: 0px;
 }
 
-.logs {
-  max-height: 500px;
-  overflow: scroll;
-  padding-bottom: 15px;
-}
-
-.test-log-viewer {
+.logs, .test-log-viewer {
   max-height: 500px;
   overflow: scroll;
 }
 
-.logs hr {
+hr {
   border: 0;
+  margin: 0;
   height: 1px;
   background-image: -webkit-linear-gradient(left, #FFF, #EBEBEB, #FFF);
   background-image:    -moz-linear-gradient(left, #FFF, #EBEBEB, #FFF);
   background-image:     -ms-linear-gradient(left, #FFF, #EBEBEB, #FFF);
   background-image:      -o-linear-gradient(left, #FFF, #EBEBEB, #FFF);
 }
-
-test-log-viewer
 
 .logs h2 {
   font-weight: normal;
