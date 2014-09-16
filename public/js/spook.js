@@ -1,7 +1,7 @@
 /*global NodeList, HTMLCollection, io, location, moment, queued, msgs, ACT, SLUM, NProgress */
 
-(function() {
-'use strict';
+// (function() {
+// 'use strict';
 
 // augment array-like objects with array methods
 ['forEach', 'map', 'filter', 'reduce', 'reduceRight', 'every', 'some'].forEach(
@@ -95,7 +95,9 @@ if(ACT) {
         });
         // if autoscroll is on, scroll to the newly added line
         if(autoscroll && log[msg.test].visible) {
-          log[msg.test].dom.tip.scrollIntoView();
+          // objDiv.scrollTop = objDiv.scrollHeight;
+          log[msg.test].dom.viewer.scrollTop = log[msg.test].dom.viewer.scrollHeight;
+          // log[msg.test].dom.tip.scrollIntoView(true);
         }
         return;
       }
@@ -105,17 +107,14 @@ if(ACT) {
     document.getElementById('auto-scroll').addEventListener('click', function(){
       autoscroll = !autoscroll;
     });
-    document.getElementsByClassName('test-tip').forEach(function(el) {
+    // get references to log outputs
+    document.getElementsByClassName('test-log-viewer').forEach(function(el) {
       log[el.getAttribute('data-test')] = {
         dom: {
-          tip: el
+          viewer: el
         },
         visible: false
       };
-    });
-    // get references to log outputs
-    document.getElementsByClassName('test-log-viewer').forEach(function(el) {
-      log[el.getAttribute('data-test')].dom.viewer = el;
     });
     document.getElementsByClassName('test-log-full').forEach(function(el) {
       log[el.getAttribute('data-test')].dom.full = el;
@@ -191,4 +190,4 @@ socket.on('open', function(msg){
   }
 });
 
-}());
+// }());
