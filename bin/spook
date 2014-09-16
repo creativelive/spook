@@ -33,8 +33,17 @@ function help() {
     .concat('')
     .concat('functional test harness')
     .concat('')
-    .concat('--tests tests to run')
-    .concat('--record record the run output')
+    .concat('--tests glob pattern for tests to run')
+    .concat('--list-tests show the set of tests that will be executed')
+    .concat('--base local directory path prefix for where tests live')
+    .concat('--cwd top level directory to consider as the current working directory')
+    .concat('--includes glob pattern files to include before tests run')
+    .concat('--out top-level directory to output assets (like screenshots) to')
+    .concat('--work[parallel|series] how to run tests')
+    .concat('--parallel-limit how many tests to run in parallel')
+    .concat('')
+    .concat('--server start a spook server (on --port)')
+    .concat('-- traling arguments/options passed directly to casperjs')
     ;util.puts(usage.join('\n'));
     ghost();
     process.exit();
