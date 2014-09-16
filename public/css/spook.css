@@ -398,7 +398,17 @@ a.tip:hover:before {
   font-size: .8em;
 }
 
+a.tip.tip-right:hover:before {
+  top: 10px;
+  left: 50px;
+}
+
 a.tip.tip-left:hover:before {
+  top: 10px;
+  left: 4px;
+}
+
+a.tip.tip-far-left:hover:before {
   top: 10px;
   left: -20px;
 }
