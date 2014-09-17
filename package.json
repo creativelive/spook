@@ -1,6 +1,6 @@
 {
   "name": "spook",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "functional testing harness for casperjs",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,7 @@
     "gulp-jsbeautifier": "0.0.2",
     "gulp-eslint": "^0.1.8",
     "gulp": "^3.8.7",
-    "gulp-diff": "^0.1.4",
-    "minimist": "^0.2.0"
+    "gulp-diff": "^0.1.4"
   },
   "bin": {
     "spook": "bin/spook"
