@@ -7,9 +7,8 @@
   <tr>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
     <td class="info">last run</td>
+    <td></td>
     <td class="info">last duration</td>
     <td class="info">recent history</td>
   </tr>
@@ -17,12 +16,9 @@
   <tr>
   <% jobs.forEach(function(job){ %>
   <% if(job.runs.length) { var run = job.runs[0]; %>
-    <td class="state badge"><a class="tip tip-left" data-tip="#<%= run.NUM %>" href="/job/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>
-
     <td class="run"><a href="/job/<%= job.SLUG %>/run"><span class="run">RUN</span></a></td>
-
     <td class="job"><a href="/job/<%= job.SLUG %>"><%= job.ALIAS %><a/></td>
-    <td></td>
+    <td class="state badge"><a class="tip tip-left" data-tip="#<%= run.NUM %>" href="/job/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>
     <td class="info time"><% if(run.END) { %><a href="/job/<%= run.SLUG %>/<%= run.NUM %>" data-END="<%= run.END %>"><%- moment.duration((run.END - now), 'seconds').humanize(true) %></a><% } %></td>
     <td class="info time"><% if(run.END) { %><a href="/job/<%= run.SLUG %>/<%= run.NUM %>"><%= run.DU %><span class="testing"><%= run.TO.DU %></span></a><% } %></td>
 
@@ -32,10 +28,10 @@
       <% }); %>
     </td>
   <% } else { %>
-    <td class="state badge"></td>
     <td class="run"><a href="/job/<%= job.SLUG %>/run"><span class="run">RUN</span></a></td>
     <td class="job"><a href="/job/<%= job.SLUG %>"><%= job.ALIAS %><a/></td>
-    <td colspan="4"></td>
+    <td class="state badge"><img src="/img/OPEN.png" /><span>...</span></td>
+    <td colspan="3"></td>
   <% } %>
   </tr>
   <% }); %>
