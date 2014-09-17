@@ -1,6 +1,6 @@
 {
   "name": "spook",
-  "version": "0.0.34",
+  "version": "0.1.0",
   "description": "functional testing harness for casperjs",
   "main": "index.js",
   "scripts": {

@@ -246,9 +246,13 @@ td.run {
 
 span.run {
   padding: 5px;
-  background-color: #FFD700;
+  background-color: #FFE766;
   color: #000;
   font-size: 1.2em;
+}
+
+span.run:hover {
+  background-color: #FFD700;
 }
 
 h2 span.run {
