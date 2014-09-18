@@ -21,14 +21,35 @@ If you want to run the spook server and generate thumbnails for screenshots, als
 brew install graphicsmagick
 ```
 
-# Why Spook?
+## Screenshots of spook server
+
+##### configured jobs
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/jobs.png)
+
+##### job runs
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/runs.png)
+
+##### raw run output
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/run.png)
+
+##### run results
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/results.png)
+
+##### formatted log output
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/log.png)
+
+##### screenshot thumbnails
+![](https://raw.githubusercontent.com/creativelive/spook/gh-pages/imgs/screens/screenshots.png)
+
+
+## Why Spook?
 
 - parallel execution of casperjs tests
 - automatic inclusion of include files ([extending this approach](https://gist.github.com/n1k0/3813361))
 - optional recording of results with server interface to run tests and browse results
 
 
-## Running tests in Spook
+## Running tests via Spook
 
 A typical spook command (run from the root of this cloned repo) might look like this:
 
@@ -69,6 +90,20 @@ You can then start a spook server to run/view tests, via
 spook --server
 ```
 
+### Saving screenshots
+
+To have spook automatically parse screen shots and save assets to the right location, add this function to one of your include files. We're overriding the default `casper.capture`, but you could create a new function. You then create a screenshot with `casper.capture('name-without-extension')`.
+
+```
+casper._capture = casper.capture;
+casper.capture = function capture(targetFilepath, clipRect, opts) {
+  opts = opts || {};
+  opts.format = opts.format || 'jpg';
+  opts.quality = opts.quality || 75;
+  console.log('saving screenshot ' + targetFilepath + '.' + opts.format);
+  casper._capture(casper.cli.options.output + '/' + targetFilepath + '.' + opts.format, clipRect, opts);
+};
+```
 
 ---
 
