@@ -92,7 +92,7 @@ spook --server
 
 ### Saving screenshots
 
-To have spook automatically parse screen shots and save assets to the right location, add this function to one of your include files. We're overriding the default `casper.capture`, but you could create a new function. You then create a screenshot with `casper.capture('name-without-extension')`.
+To have spook automatically parse screen shots and save assets to the right location, add this function to one of your include files (spook parses logout for the string "saving screenshot"). We're overriding the default `casper.capture`, but you could create a new function. You then create a screenshot with `casper.capture('name-without-extension')`.
 
 ```
 casper._capture = casper.capture;
