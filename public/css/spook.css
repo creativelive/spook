@@ -289,6 +289,7 @@ tr.detail td.domain {
 
 td.time {
   font-size: 0.8em;
+  max-width: 200px;
 }
 
 td.state img {
@@ -318,7 +319,7 @@ td.state.history img {
 }
 
 td.duration {
-  width: 150px;
+  width: 80px;
 }
 
 /* make last status sit over table bottom border */
@@ -347,6 +348,11 @@ td.state span {
 td.time span.testing {
   color: #A3A3A1;
   display: block;
+}
+
+td.desc {
+  text-align:left;
+  font-size: 0.9em;
 }
 
 /* SCREENSHOTS */

@@ -14,7 +14,7 @@
     <td class="count">failed</td>
     <td class="count">dubious</td>
     <td class="count">skipped</td>
-    <td class="info">duration</td>
+    <td class="info duration">duration</td>
   </tr>
   </thead>
 
@@ -28,6 +28,7 @@
     <td class="result"><%= run.TO.DB %></td>
     <td class="result"><%= run.TO.SK %></td>
     <td class="info time"><%= run.DU %> <span class="testing"><%= run.TO.DU %></span></td>
+    <td></td>
   </tr>
     <%
       for(var NAME in run.TE) {
@@ -42,6 +43,7 @@
       <td class="result"><%= TE.DB %></td>
       <td class="result"><%= TE.SK %></td>
       <td class="info time"><%= TE.DU %>&nbsp;</td>
+      <td class="desc"><a href="#test-<%= NAME %>"><%= (desc[NAME] || '') %></a></td>
     </tr>
   <% } %>
 </table>

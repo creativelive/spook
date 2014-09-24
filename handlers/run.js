@@ -21,6 +21,8 @@ exports.detail = function(request, reply) {
   var mask = pad(4, request.params.num, '0');
   mask = path.join(mask.substr(0, 2), mask.substr(2));
 
+  var desc = {};
+
   var dir = path.join(request.server.settings.app.dbd, request.params.slug, mask);
   var images = [];
   async.parallel({
@@ -67,17 +69,23 @@ exports.detail = function(request, reply) {
               }
             });
           }
+          var test = '';
           raw = raw.replace(/PASS/g, '<span class="fg-PASS">PASS</span>')
             .replace(/WARN/g, '<span class="fg-WARN">WARN</span>')
             .replace(/FAIL/g, '<span class="fg-FAIL">FAIL</span>')
             .replace(/VOID/g, '<span class="fg-VOID">VOID</span>')
             .replace(/SPOOK/g, '<span class="fg-VOID">SPOOK</span>')
+            .replace(/\[TEST\] (.*)/g, function(match, p1) {
+              test = p1;
+              return '<a class="anchor" name="test-' + p1 + '">' + p1 + '</a><b>' + p1 + '</b>';
+            })
+            .replace(/\[DESC\] (.*)/g, function(match, p1) {
+              desc[test] = p1;
+              return '';
+            })
             .replace(/saving screenshot (.*\.jpg)/g, function(match, p1) {
               images.push(p1);
               return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/thumb.' + p1 + ');background-size: cover;"></div>' + p1 + '</a>';
-            })
-            .replace(/\[TEST\] (.*)/g, function(match, p1) {
-              return '<a class="anchor" name="test-' + p1 + '">' + p1 + '</a><b>' + p1 + '</b>';
             })
             .replace(/\[error\] \[phantom\]/g, '<span class="fg-FAIL">error</span> [phantom]')
             .replace(/ {2}/g, '&nbsp;')
@@ -108,6 +116,7 @@ exports.detail = function(request, reply) {
 
     data = {
       job: res.job,
+      desc: desc,
       run: res.run,
       log: res.log,
       images: images
