@@ -107,4 +107,8 @@ casper.capture = function capture(targetFilepath, clipRect, opts) {
 
 ---
 
+Watch out for this [nasty bug](https://github.com/n1k0/casperjs/issues/1027) in casper when passing arguments to slimerjs - key values cannot start with an `s`!
+
+---
+
 Spook logos designed by [Julien Deveaux](http://thenounproject.com/Julihan) from the [Noun Project](http://thenounproject.com/) :: Creative Commons – Attribution (CC BY 3.0)
