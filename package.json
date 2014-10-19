@@ -1,6 +1,6 @@
 {
   "name": "spook",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "functional testing harness for casperjs",
   "main": "index.js",
   "scripts": {
@@ -21,23 +21,24 @@
     "spook": "bin/spook"
   },
   "dependencies": {
+    "async": "^0.9.0",
+    "chalk": "^0.5.1",
+    "deap": "^1.0.0",
+    "ejs": "^1.0.0",
+    "glob": "^4.0.5",
+    "gm": "^1.16.0",
+    "hapi": "^6.7.1",
+    "lru-cache": "^2.5.0",
     "minimist": "^1.1.0",
-    "moment": "^2.8.2",
     "mkdirp": "^0.5.0",
+    "moment": "^2.8.2",
+    "nedb": "^0.11.0",
     "pad": "0.0.5",
     "rimraf": "^2.2.8",
-    "async": "^0.9.0",
-    "split": "^0.3.0",
-    "hapi": "^6.7.1",
-    "chalk": "^0.5.1",
-    "ejs": "^1.0.0",
-    "nedb": "^0.11.0",
-    "gm": "^1.16.0",
-    "deap": "^1.0.0",
-    "lru-cache": "^2.5.0",
     "slug": "^0.5.0",
-    "glob": "^4.0.5",
-    "socket.io": "^1.1.0"
+    "socket.io": "^1.1.0",
+    "split": "^0.3.0",
+    "strip-ansi": "^2.0.0"
   },
   "repository": {
     "type": "git",
