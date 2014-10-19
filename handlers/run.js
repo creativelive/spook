@@ -65,7 +65,7 @@ exports.detail = function(request, reply) {
             console.log(err);
           }
           //  get logs into order
-          for(var i in log) {
+          for (var i in log) {
             raw += log[i];
           }
           // start writing the log and move on
