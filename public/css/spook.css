@@ -501,10 +501,9 @@ hr {
   display: none;
 }
 
-.logs::-webkit-scrollbar, .log::-webkit-scrollbar, .runs-table-responsive::-webkit-scrollbar {
+.logs::-webkit-scrollbar, .logs div::-webkit-scrollbar, .runs-table-responsive::-webkit-scrollbar {
     -webkit-appearance: none;
 }
-
 
 /* RUN STATES */
 .fg-PASS {
