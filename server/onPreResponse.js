@@ -22,6 +22,9 @@ module.exports = function(request, reply) {
     context.open = Object.keys(runner.open).length || 0;
     context.queued = runner.queued();
 
+    // requested meta refresh for page
+    context.refresh = request.query.refresh;
+
     if (response.isBoom) {
       context.err = (response.output.statusCode === 404 ? 'Page not found' : 'Something went wrong');
       var templates = {

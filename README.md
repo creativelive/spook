@@ -105,6 +105,10 @@ casper.capture = function capture(targetFilepath, clipRect, opts) {
 };
 ```
 
+### Reloading spook pages
+
+Spook uses socket.io to send progress of runs to the browser. The list of run jobs don't have any automatic refreshing built in yet, but you can pass `?refresh=X` where X is a number in seconds which will make spook reload any page via a meta tag.
+
 ---
 
 Spook logos designed by [Julien Deveaux](http://thenounproject.com/Julihan) from the [Noun Project](http://thenounproject.com/) :: Creative Commons – Attribution (CC BY 3.0)
