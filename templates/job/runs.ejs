@@ -1,8 +1,7 @@
 <% locals.subtitle = '<a href="/job/' + job.SLUG + '/run"><span class="run">RUN</span></a><a href="/job/' + job.SLUG + '">' + job.ALIAS + '</a>' %>
-
 <% include ../header %>
 <div class="pure-u-1-1">
-
+<pre class="job"><code><%= job.CMD %></code></pre>
 <div class="runs-table-responsive">
 <table class="runs">
   <thead>

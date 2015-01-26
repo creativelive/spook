@@ -554,6 +554,36 @@ hr {
   color: #FFF;
 }
 
+/* code */
+pre code {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  display: block;
+  padding: 9.5px;
+  font-size: 13px;
+  line-height: 1.428571429;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+code {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  padding: 4px;
+  font-size: 13px;
+  line-height: 1.428571429;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+pre.job {
+  margin: 0 1em 1em 0;
+}
 
 /* RADIO BUTTON */
 /*http://proto.io/freebies/onoff/*/
