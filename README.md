@@ -60,8 +60,8 @@ spook --out run --tests '{homepage,loads/{bundle,catalog}.js}' --base tests/www 
 Let's break that down:
   - `spook` the spook executable
   - `--out` the relative directory to output any screenshots
-  - `--tests` a glob pattern of what tests to run
-  - `--includes` a glob pattern of what files to invlude before tests are run
+  - `--tests` a glob pattern of what tests to run, this pattern should be in quotes to prevent shell variable expansion
+  - `--includes` a glob pattern of what files to invlude before tests are run, this pattern should be in quotes to prevent shell variable expansion
   - `--base` a local directory path to where the actual tests are (makes `--test` simpler to write and removes this path prefix from results)
   - `--` signifies the end of arguments/options sent to `spook`, all values after this are sent to `casperjs` directly
   - `--env=production` passing an option called `env` to `casperjs` cli
