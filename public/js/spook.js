@@ -32,6 +32,17 @@ if(ENDs.length) {
   }, 60000);
 }
 
+// collection of OPENs
+var OPENs = {};
+// get all DUs, store a reference to their dom and value
+document.querySelectorAll('.open-list-run').forEach(function(el) {
+  var SLUM = el.getAttribute('data-SLUM');
+  OPENs[SLUM] = {
+    img: el.querySelector('img'),
+    span: el.querySelector('span')
+  };
+});
+
 // collection of DUrations
 var DUs = {};
 // get all DUs, store a reference to their dom and value
@@ -161,6 +172,7 @@ if(ACT) {
 
 // responding to general open run broadcasts
 socket.on('open', function(msg){
+  console.log(msg);
   if(msg.type === 'END') {
     openCount.innerText = msg.open;
     // finished the progress bar and remove the kill switch
@@ -187,6 +199,11 @@ socket.on('open', function(msg){
       result.span.innerText = msg.ST;
       result.img.src = '/img/' + msg.ST + '.png';
       result.span.className = 'bg-' + msg.ST;
+    }
+    if(OPENs && OPENs[msg.SLUM]) {
+      OPENs[msg.SLUM].span.innerText = msg.ST;
+      OPENs[msg.SLUM].img.src = '/img/' + msg.ST + '.png';
+      OPENs[msg.SLUM].span.className = 'bg-' + msg.ST;
     }
     return;
   }

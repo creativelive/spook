@@ -19,7 +19,7 @@
       }
     %>
     <td class="num"><a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span><%= run.NUM %></span></a></td>
-    <td class="state badge"><a data-tip="#<%= run.NUM %>" href="/open/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
+    <td class="open-list-run state badge" data-SLUM="<%= run.SLUM %>"><a data-tip="#<%= run.NUM %>" href="/open/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
     <td class="job"><a href="/job/<%= run.SLUG %>"><%= run.ALIAS %><a/></td>
     <td class="time info duration"><a href="/open/<%= run.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DUDisplay %></span>s</a></td>
   </tr>
