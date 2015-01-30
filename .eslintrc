@@ -8,7 +8,8 @@
     "camelcase": 0,
     "no-underscore-dangle": 0,
     "no-new": 0,
-    "new-cap": 0
+    "new-cap": 0,
+    "no-shadow": 0
   },
   "globals": {
     "casper": true,
