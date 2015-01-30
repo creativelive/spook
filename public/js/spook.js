@@ -1,7 +1,7 @@
 /*global NodeList, HTMLCollection, io, location, moment, queued, msgs, ACT, SLUM, NProgress */
 
 // (function() {
-// 'use strict';
+'use strict';
 
 // augment array-like objects with array methods
 ['forEach', 'map', 'filter', 'reduce', 'reduceRight', 'every', 'some'].forEach(
@@ -11,6 +11,10 @@
 
 // join socket
 var socket = io(location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : ''));
+// show any errors
+socket.on('error', function(err){
+  console.log(err);
+});
 
 // track global open runs
 var openCount = document.getElementById('open-count');
@@ -32,7 +36,7 @@ if(ENDs.length) {
   }, 60000);
 }
 
-// collection of OPENs
+// collection of OPEN runs on /open
 var OPENs = {};
 // get all DUs, store a reference to their dom and value
 document.querySelectorAll('.open-list-run').forEach(function(el) {
@@ -68,8 +72,11 @@ if(Object.keys(DUs).length) {
   }, 1000);
 }
 
-// active running run
+// ACT will bve set if viewing an active run, which will have a key of SLUM
+
+// active running run at job/<foo>/run
 if(ACT) {
+  // configure the faux progress bar
   NProgress.configure({ showSpinner: false, trickleRate: 0.02 });
 
   // control for killing the run
@@ -90,6 +97,11 @@ if(ACT) {
   if(runCtrls) {
     var autoscroll = true;
     var log = {};
+
+    // setup autoscroll
+    document.getElementById('auto-scroll').addEventListener('click', function(){
+      autoscroll = !autoscroll;
+    });
 
     // play out the log messages
     var playMsg = function playMsg(msg){
@@ -114,11 +126,7 @@ if(ACT) {
       }
     };
 
-    // autoscroll
-    document.getElementById('auto-scroll').addEventListener('click', function(){
-      autoscroll = !autoscroll;
-    });
-    // get references to log outputs
+    // get references to log outputs and handle clicks for which mini log to show
     document.getElementsByClassName('test-log-viewer').forEach(function(el) {
       log[el.getAttribute('data-test')] = {
         dom: {
@@ -144,42 +152,40 @@ if(ACT) {
       });
     });
 
-    // results
+    // dom references to update for run results
     var result = {
       img: document.getElementById('run-result-img'),
       span: document.getElementById('run-result-span')
     };
 
-    // if loading an open run with a dumped set of messages, play them out
+    // if loading an open run with a dumped set of historical messages, play them out
     if(msgs) {
       msgs.forEach(function(msg){
         playMsg(msg);
       });
     }
 
-    // show some errors
-    socket.on('error', function(err){
-      console.log(err);
-    });
-
     // join the socket.io room for the active run
     if(ACT && SLUM) {
       socket.emit('join', SLUM);
     }
+
+    // respond to incoming messages
     socket.on('run', playMsg);
   }
 }
 
-// responding to general open run broadcasts
+// responding to general open run broadcasts across the site
 socket.on('open', function(msg){
   console.log(msg);
   if(msg.type === 'END') {
     openCount.innerText = msg.open;
-    // finished the progress bar and remove the kill switch
+    // finished the active run, end the progress bar and remove the kill switch
     if(ACT && SLUM && (msg.SLUM === SLUM) && (!killed && killswitch)) {
       NProgress.done();
       killswitch.style.display = 'none';
     }
+    // update any duration timers for this SLUM
     if(DUs[msg.SLUM]) {
       // if a duration timer never really got going, set its final value to 0
       if(DUs[msg.SLUM].dom.innerText === 'wait'){
@@ -195,11 +201,13 @@ socket.on('open', function(msg){
       // remove the duration timer
       delete DUs[msg.SLUM];
     }
+    // update the active run final status
     if(ACT && msg.SLUM === SLUM) {
       result.span.innerText = msg.ST;
       result.img.src = '/img/' + msg.ST + '.png';
       result.span.className = 'bg-' + msg.ST;
     }
+    // update run status on /open
     if(OPENs && OPENs[msg.SLUM]) {
       OPENs[msg.SLUM].span.innerText = msg.ST;
       OPENs[msg.SLUM].img.src = '/img/' + msg.ST + '.png';
@@ -207,6 +215,7 @@ socket.on('open', function(msg){
     }
     return;
   }
+  // starting a run
   if(msg.type === 'STA') {
     openCount.innerText = msg.open;
     // note that the run is no longer queued
