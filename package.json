@@ -1,6 +1,6 @@
 {
   "name": "spook",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "functional testing harness for casperjs",
   "main": "index.js",
   "scripts": {
@@ -12,10 +12,10 @@
   "author": "Matthew Hadley (https://github.com/diffsky)",
   "license": "MIT",
   "devDependencies": {
-    "gulp-jsbeautifier": "0.0.2",
-    "gulp-eslint": "^0.1.8",
-    "gulp": "^3.8.7",
-    "gulp-diff": "^0.1.4"
+    "gulp-jsbeautifier": "0.0.4",
+    "gulp-eslint": "^0.2.2",
+    "gulp": "^3.8.10",
+    "gulp-diff": "^0.3.1"
   },
   "bin": {
     "spook": "bin/spook"
@@ -24,21 +24,21 @@
     "async": "^0.9.0",
     "chalk": "^0.5.1",
     "deap": "^1.0.0",
-    "ejs": "^1.0.0",
-    "glob": "^4.0.5",
-    "gm": "^1.16.0",
+    "ejs": "1.0.0",
+    "glob": "4.0.5",
+    "gm": "^1.17.0",
     "hapi": "^6.7.1",
     "lru-cache": "^2.5.0",
     "minimist": "^1.1.0",
     "mkdirp": "^0.5.0",
-    "moment": "^2.8.2",
-    "nedb": "^0.11.0",
-    "pad": "0.0.5",
+    "moment": "^2.9.0",
+    "nedb": "^1.1.1",
+    "pad": "0.0.8",
     "rimraf": "^2.2.8",
-    "slug": "^0.5.0",
-    "socket.io": "^1.1.0",
-    "split": "^0.3.0",
-    "strip-ansi": "^2.0.0"
+    "slug": "^0.8.0",
+    "socket.io": "^1.3.2",
+    "split": "^0.3.2",
+    "strip-ansi": "^2.0.1"
   },
   "repository": {
     "type": "git",

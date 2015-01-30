@@ -39,7 +39,7 @@ if(ENDs.length) {
 // collection of OPEN runs on /open
 var OPENs = {};
 // get all DUs, store a reference to their dom and value
-document.querySelectorAll('.open-list-run').forEach(function(el) {
+document.querySelectorAll('.open-run').forEach(function(el) {
   var SLUM = el.getAttribute('data-SLUM');
   OPENs[SLUM] = {
     img: el.querySelector('img'),

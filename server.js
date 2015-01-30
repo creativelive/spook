@@ -60,7 +60,8 @@ module.exports = function init(opts) {
 
   // db
   require('./lib/db')({
-    dbd: server.settings.app.dbd
+    dbd: server.settings.app.dbd,
+    prune: opts.prune
   }, function(err, res) {
     if (err) {
       console.log(err);
