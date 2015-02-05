@@ -12,7 +12,8 @@ Tests are run via [casperjs](http://casperjs.org/) on [phantomjs](http://phantom
 
 Global deps:
 ```
-[sudo] npm -g install slimerjs casperjs phantomjs
+[sudo] npm -g install slimerjs@0.9.2 casperjs phantomjs
+# see https://github.com/laurentj/slimerjs/issues/301
 ```
 
 If you want to run the spook server and generate thumbnails for screenshots, also install [graphicsmagick](http://www.graphicsmagick.org/). You can do this on osx via [Homebrew](http://brew.sh/)
