@@ -28,7 +28,11 @@
       }
     %>
     <td class="open-run state badge" data-SLUM="<%= run.SLUM %>"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><img src="/img/OPEN.png" /><span class="bg-OPEN">OPEN</span></a></td>
-    <td colspan="5"></td>
+    <td class="result" data-OPEN-TO="TO" data-SLUM="<%= run.SLUM %>"></td>
+    <td class="result" data-OPEN-TO="PA" data-SLUM="<%= run.SLUM %>"></td>
+    <td class="result" data-OPEN-TO="FA" data-SLUM="<%= run.SLUM %>"></td>
+    <td class="result" data-OPEN-TO="DB" data-SLUM="<%= run.SLUM %>"></td>
+    <td class="result" data-OPEN-TO="SK" data-SLUM="<%= run.SLUM %>"></td>
     <td class="time info"><a href="/open/<%= job.SLUG %>/<%= run.NUM %>"><span data-DU="<%= run.DU %>" data-SLUM="<%= run.SLUM %>"><%= run.DUDisplay %></span>s</a></td>
     <td class="time info"></td>
     <% } else { %>

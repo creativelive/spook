@@ -38,13 +38,22 @@ if(ENDs.length) {
 
 // collection of OPEN runs on /open
 var OPENs = {};
-// get all DUs, store a reference to their dom and value
+// get all open runs, store a reference to their dom and value
 document.querySelectorAll('.open-run').forEach(function(el) {
   var SLUM = el.getAttribute('data-SLUM');
   OPENs[SLUM] = {
     img: el.querySelector('img'),
     span: el.querySelector('span')
   };
+});
+// get any dom elements that will hold results for open run totals
+document.querySelectorAll('[data-OPEN-TO').forEach(function(el) {
+  var SLUM = el.getAttribute('data-SLUM');
+  var TO = el.getAttribute('data-OPEN-TO');
+  if(OPENs[SLUM]) {
+    OPENs[SLUM].TO = OPENs[SLUM].TO || {};
+  }
+  OPENs[SLUM].TO[TO] = el;
 });
 
 // collection of DUrations
@@ -72,7 +81,7 @@ if(Object.keys(DUs).length) {
   }, 1000);
 }
 
-// ACT will bve set if viewing an active run, which will have a key of SLUM
+// ACT will be set if viewing an active run, which will have a key of SLUM
 
 // active running run at job/<foo>/run
 if(ACT) {
@@ -207,11 +216,16 @@ socket.on('open', function(msg){
       result.img.src = '/img/' + msg.ST + '.png';
       result.span.className = 'bg-' + msg.ST;
     }
-    // update run status on /open
+    // update run status on /open and runs list for a job
     if(OPENs && OPENs[msg.SLUM]) {
       OPENs[msg.SLUM].span.innerText = msg.ST;
       OPENs[msg.SLUM].img.src = '/img/' + msg.ST + '.png';
       OPENs[msg.SLUM].span.className = 'bg-' + msg.ST;
+      if (OPENs[msg.SLUM].TO) {
+        Object.keys(OPENs[msg.SLUM].TO).forEach(function(TO) {
+          OPENs[msg.SLUM].TO[TO].innerText = msg.TO[TO];
+        });
+      }
     }
     return;
   }
