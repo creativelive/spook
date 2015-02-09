@@ -14,7 +14,11 @@ exports.detail = function(request, reply) {
   var data = cache.get(key);
 
   if (data) {
-    return reply.view('run/detail', data);
+    if (request.query.json) {
+      return reply(data);
+    } else {
+      return reply.view('run/detail', data);
+    }
   }
 
   var needsCombinedRunLog = true;
@@ -125,6 +129,12 @@ exports.detail = function(request, reply) {
       images: images
     };
     cache.set(key, data);
-    reply.view('run/detail', data);
+
+    if (request.query.json) {
+      reply(data);
+    } else {
+      reply.view('run/detail', data);
+    }
+
   });
 };

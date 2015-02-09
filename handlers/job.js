@@ -42,9 +42,17 @@ exports.list = function(request, reply) {
       if (err) {
         return reply(Hapi.error.internal(err));
       }
-      reply.view('job/list', {
+
+      var data = {
         jobs: jobs
-      });
+      };
+
+      if (request.query.json) {
+        return reply(data);
+      } else {
+        reply.view('job/list', data);
+      }
+
     });
   });
 };
@@ -54,9 +62,16 @@ exports.open = function(request, reply) {
   for (var run in runner.open) {
     runs.push(runner.open[run].data.run);
   }
-  reply.view('job/open', {
+
+  var data = {
     runs: runs
-  });
+  };
+
+  if (request.query.json) {
+    return reply(data);
+  } else {
+    reply.view('job/open', data);
+  }
 };
 
 exports.runs = function(request, reply) {
@@ -84,10 +99,18 @@ exports.runs = function(request, reply) {
     if (!res.job) {
       return reply(Hapi.error.notFound('job not found'));
     }
-    reply.view('job/runs', {
+
+    var data = {
       job: res.job,
       runs: res.runs
-    });
+    };
+
+    if (request.query.json) {
+      return reply(data);
+    } else {
+      reply.view('job/runs', data);
+    }
+
   });
 };
 
