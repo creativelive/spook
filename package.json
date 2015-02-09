@@ -4,9 +4,9 @@
   "description": "functional testing harness for casperjs",
   "main": "index.js",
   "scripts": {
-    "test": "alias gulp='node_modules/gulp/bin/gulp.js' && gulp beautify && gulp eslint",
-    "lint": "alias gulp='node_modules/gulp/bin/gulp.js';gulp beautify && gulp eslint",
-    "beautify": "node_modules/gulp/bin/gulp.js beautify --write"
+    "test": "gulp beautify && gulp eslint",
+    "lint": "gulp beautify && gulp eslint",
+    "beautify": "gulp beautify --write"
   },
   "preferGlobal": true,
   "author": "Matthew Hadley (https://github.com/diffsky)",
