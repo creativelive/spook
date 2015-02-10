@@ -118,7 +118,7 @@ exports.runs = function(request, reply) {
 exports.run = function(request, reply) {
   runner.run({
     SLUG: request.params.slug,
-    webhook: request.query.webhook
+    webhook: request.query.webhook || request.server.settings.app.webhook
   }, function(err, res) {
     if (err) {
       return reply(Hapi.error.internal(err));
