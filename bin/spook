@@ -5,7 +5,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 var pkg = require('../package.json');
 var util = require('util');
-var formatter = require('../lib/formatter');
+var formatter = require('../lib/cli-formatter');
 var Spook = require('../lib/spook');
 var slug = require('slug');
 

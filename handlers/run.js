@@ -8,6 +8,7 @@ var pad = require('pad');
 var glob = require('glob');
 var db = require('../lib/db');
 var cache = require('../lib/cache');
+var formatter = require('../lib/json-formatter');
 
 exports.detail = function(request, reply) {
   var key = request.params.slug + '-' + request.params.num;
@@ -15,7 +16,7 @@ exports.detail = function(request, reply) {
 
   if (data) {
     if (request.query.json) {
-      return reply(data);
+      return reply(formatter(data));
     } else {
       return reply.view('run/detail', data);
     }
@@ -131,7 +132,7 @@ exports.detail = function(request, reply) {
     cache.set(key, data);
 
     if (request.query.json) {
-      reply(data);
+      return reply(formatter(data));
     } else {
       reply.view('run/detail', data);
     }

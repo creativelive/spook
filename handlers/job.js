@@ -5,6 +5,7 @@ var Hapi = require('hapi');
 var async = require('async');
 var db = require('../lib/db');
 var runner = require('../lib/runner');
+var formatter = require('../lib/json-formatter');
 
 exports.act = function(request, reply) {
   var SLUM = request.params.slug + '-' + request.params.num;
@@ -48,7 +49,7 @@ exports.list = function(request, reply) {
       };
 
       if (request.query.json) {
-        return reply(data);
+        return reply(formatter(data));
       } else {
         reply.view('job/list', data);
       }
@@ -106,7 +107,7 @@ exports.runs = function(request, reply) {
     };
 
     if (request.query.json) {
-      return reply(data);
+      return reply(formatter(data));
     } else {
       reply.view('job/runs', data);
     }
