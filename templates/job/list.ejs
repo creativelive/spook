@@ -11,6 +11,9 @@
     <td></td>
     <td class="info">last duration</td>
     <td class="info">recent history</td>
+    <td class="donut">last 5</td>
+    <td class="donut">25</td>
+    <td class="donut">125</td>
   </tr>
   </thead>
   <tr>
@@ -21,22 +24,72 @@
     <td class="state badge"><a class="tip tip-left" data-tip="#<%= run.NUM %>" href="/job/<%= run.SLUG %>/<%= run.NUM %>"><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></a></td>
     <td class="info time"><% if(run.END) { %><a href="/job/<%= run.SLUG %>/<%= run.NUM %>" data-END="<%= run.END %>"><%- moment.duration((run.END - now), 'seconds').humanize(true) %></a><% } %></td>
     <td class="info time"><% if(run.END) { %><a href="/job/<%= run.SLUG %>/<%= run.NUM %>"><%= run.DU %><span class="testing"><%= run.TO.DU %></span></a><% } %></td>
-
     <td class="info state history">
       <% job.runs.forEach(function(run, i){ %>
         <a class="tip tip-far-left" data-tip="#<%= run.NUM %>" href="/job/<%= run.SLUG %>/<%= run.NUM %>"><img class="bb-<%= run.TO.ST %>" src="/img/<%= run.TO.ST %>.png" /></a>
       <% }); %>
     </td>
+    <td><canvas class="donut" id="chart-short-<%= job.SLUG %>" width="36" height="36"></canvas></td>
+    <td><canvas class="donut" id="chart-medium-<%= job.SLUG %>" width="36" height="36"></canvas></td>
+    <td><canvas class="donut" id="chart-long-<%= job.SLUG %>" width="36" height="36"></canvas></td>
   <% } else { %>
     <td class="run"><a href="/job/<%= job.SLUG %>/run"><span class="run">RUN</span></a></td>
     <td class="job"><a href="/job/<%= job.SLUG %>"><%= job.ALIAS %><a/></td>
     <td class="state badge"><img src="/img/OPEN.png" /><span>not&nbsp;yet&nbsp;run</span></td>
-    <td colspan="3"></td>
+    <td colspan="7"></td>
   <% } %>
   </tr>
   <% }); %>
 </table>
 </div>
-
 </div>
+
+<script>
+(function(){
+  var options = {
+    percentageInnerCutout: 40,
+    animationSteps: 25,
+    animationEasing: 'linear',
+    animateRotate: true,
+    animateScale: true,
+    showTooltips: false
+  };
+  var delay = {
+    short: 0,
+    medium: 300,
+    long: 500
+  };
+  var fns = [];
+  var history = {};
+  <% jobs.forEach(function(job){ -%>
+    history['<%= job.SLUG %>'] = <%- JSON.stringify(job.stats.history) %>;
+  <% }); %>
+  ['short', 'medium', 'long'].forEach(function(type) {
+    Object.keys(history).forEach(function(job) {
+      var data = [{
+        value: history[job][type].PASS,
+        color: '#19C736',
+      }, {
+        value: history[job][type].FAIL,
+        color: '#CD3328',
+      }, {
+        value: history[job][type].VOID,
+        color: '#000'
+      },  {
+        value: history[job][type].NONE,
+        color: '#FFF'
+      }];
+      fns.push(function(){
+        setTimeout(function(){
+          new Chart(document.getElementById('chart-' + type + '-' + job).getContext('2d')).Doughnut(data, options);
+        }, delay[type]);
+      })
+    });
+  });
+  fns.forEach(function(fn){
+    fn();
+  });
+}())
+</script>
+
 <% include ../footer %>

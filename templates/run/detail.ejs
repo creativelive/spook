@@ -21,7 +21,7 @@
   <tr class="detail">
     <td class="num"><span><%= run.NUM %></span></td>
     <td class="state badge" ><img src="/img/<%= run.TO.ST %>.png" /><span class="bg-<%= run.TO.ST %>"><%= run.TO.ST %></span></td>
-    <td></td>
+    <td class="donut"><canvas class="donut" id="chart-detail-<%= run.SLUM %>" width="36" height="36"></canvas></td>
     <td class="result"><%= run.TO.TO %></td>
     <td class="result"><%= run.TO.PA %></td>
     <td class="result"><%= run.TO.FA %></td>
@@ -70,4 +70,25 @@
 <% } %>
 
 </div>
+
+<script>
+(function(){
+  var options = {
+    percentageInnerCutout: 40,
+    animationSteps: 25,
+    animationEasing: 'linear',
+    animateRotate: true,
+    animateScale: true,
+    showTooltips: false
+  };
+  var data = [{
+    value: <%- JSON.stringify(run.TO.PA) %>,
+    color: '#19C736',
+  }, {
+    value: <%- JSON.stringify(run.TO.FA) %>,
+    color: '#CD3328',
+  }];
+  new Chart(document.getElementById('chart-detail-<%= run.SLUM %>').getContext('2d')).Doughnut(data, options);
+}())
+</script>
 <% include ../footer %>

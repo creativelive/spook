@@ -327,6 +327,19 @@ table.runs tbody>tr:last-child td.state.history img {
   margin-bottom: -3px;
 }
 
+canvas.donut {
+  margin: 4px 0px -1px 2px
+}
+
+td.donut {
+  width: 40px;
+  text-align:left;
+}
+
+thead td.donut {
+  text-align: center;
+}
+
 td.job {
   font-size: 1.3em;
   text-align: left;
