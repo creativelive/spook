@@ -77,12 +77,12 @@ exports.list = function(request, reply) {
         });
         job.runs.forEach(function(run, i) {
           if (i < lengths.short) {
-            job.stats.history.short[run.TO.ST]++;
+            job.stats.history.short[run.TO.ST] ++;
           }
           if (i < lengths.medium) {
-            job.stats.history.medium[run.TO.ST]++;
+            job.stats.history.medium[run.TO.ST] ++;
           }
-          job.stats.history.long[run.TO.ST]++;
+          job.stats.history.long[run.TO.ST] ++;
         });
         job.runs = job.runs.slice(0, 5);
       });
