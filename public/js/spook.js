@@ -47,7 +47,7 @@ document.querySelectorAll('.open-run').forEach(function(el) {
   };
 });
 // get any dom elements that will hold results for open run totals
-document.querySelectorAll('[data-OPEN-TO').forEach(function(el) {
+document.querySelectorAll('[data-OPEN-TO]').forEach(function(el) {
   var SLUM = el.getAttribute('data-SLUM');
   var TO = el.getAttribute('data-OPEN-TO');
   if(OPENs[SLUM]) {
