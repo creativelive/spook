@@ -8,7 +8,7 @@ casper.test.begin('open homepage', 1, function(test) {
     .then(function() {
       casper.capture('homepage');
     })
-    .then(function(){
+    .then(function() {
       test.assert(true);
     })
     .run(function() {
