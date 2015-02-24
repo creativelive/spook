@@ -44,13 +44,14 @@ function help() {
     .concat('--add <name> adds command as the named job to a spook server instance')
     .concat('')
     .concat('--server start a spook server (on --port)')
-    .concat('-- trailing arguments/options passed directly to casperjs')
-    ;util.puts(usage.join('\n'));
+    .concat('-- trailing arguments/options passed directly to casperjs');
+    util.puts(usage.join('\n'));
     ghost();
     process.exit();
 }
 
-if(argv.help || argv.h || argv['?']){
+// check for help or no args at all
+if(argv.help || argv.h || argv['?'] || (Object.keys(argv).length === 1 && argv._ && argv._.length === 0)){
   help();
 }
 
