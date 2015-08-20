@@ -1,4 +1,4 @@
-# [![spook](https://raw.githubusercontent.com/creativelive/spook/master/assets/spook-64.png)](https://github.com/creativelive/spook) Spook
+# [![spook](https://raw.githubusercontent.com/creativelive/spook/master/assets/spook-64.png)](https://github.com/creativelive/spook) Spook [![](https://travis-ci.org/creativelive/spook.svg)](https://travis-ci.org/creativelive/spook)
 
 functional testing harness using casperjs.
 
