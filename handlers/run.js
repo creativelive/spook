@@ -81,7 +81,6 @@ exports.detail = function(request, reply) {
               }
             });
           }
-
           raw = raw.replace(/PASS/g, '<span class="fg-PASS">PASS</span>')
             .replace(/WARN/g, '<span class="fg-WARN">WARN</span>')
             .replace(/FAIL/g, '<span class="fg-FAIL">FAIL</span>')
@@ -93,7 +92,7 @@ exports.detail = function(request, reply) {
             })
             .replace(/saving screenshot (.*\.jpg)/g, function(match, p1) {
               images.push(p1);
-              return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/thumb.' + p1 + ');background-size: cover;"></div>' + p1 + '</a>';
+              return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/thumb/' + p1 + ');background-size: cover;"></div>' + p1 + '</a>';
             })
             .replace(/\[error\] \[phantom\]/g, '<span class="fg-FAIL">error</span> [phantom]')
             .replace(/ {2}/g, '&nbsp;')
