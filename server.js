@@ -35,7 +35,7 @@ module.exports = function init(opts) {
   server.settings.app = opts;
   var dbd = opts.dbd || 'run';
   // This is awful, but normalize doesn't remove trailing slashes, and we can't compare against dbd directly in case it isn't normalized (e.g. /foo/../)
-  if(path.isAbsolute(dbd)) {
+  if(path.resolve(dbd) === path.normalize(dbd).replace( RegExp(path.sep+'$'), '' )) {
     server.settings.app.dbd = dbd;
   } else {
     server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
