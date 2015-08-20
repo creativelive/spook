@@ -30,6 +30,7 @@ exports.detail = function(request, reply) {
 
   var dir = path.join(request.server.settings.app.dbd, request.params.slug, mask);
   var images = [];
+  var thumbs = [];
   async.parallel({
     run: function(cb) {
       db.run.findOne({
@@ -91,8 +92,11 @@ exports.detail = function(request, reply) {
               return '<a class="anchor" name="test-' + p1 + '">' + p1 + '</a><b>' + p1 + '</b><br># ' + p2;
             })
             .replace(/saving screenshot (.*\.jpg)/g, function(match, p1) {
+              var lastIx = p1.lastIndexOf("/");
+              var thumbUrl = (lastIx === -1) ? "thumb." + p1 : p1.slice(0, lastIx) + "/thumb." + p1.slice(lastIx + 1);
               images.push(p1);
-              return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/thumb/' + p1 + ');background-size: cover;"></div>' + p1 + '</a>';
+              thumbs.push(thumbUrl);
+              return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/' + thumbUrl + ');background-size: cover;"></div>' + p1 + '</a>';
             })
             .replace(/\[error\] \[phantom\]/g, '<span class="fg-FAIL">error</span> [phantom]')
             .replace(/ {2}/g, '&nbsp;')
@@ -126,7 +130,8 @@ exports.detail = function(request, reply) {
       desc: desc,
       run: res.run,
       log: res.log,
-      images: images
+      images: images,
+      thumbs: thumbs
     };
     cache.set(key, data);
 

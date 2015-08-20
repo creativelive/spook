@@ -57,12 +57,12 @@
 <div class="screenshots">
 <% if (images.length) { %>
 <h2>Screenshots</h2>
-<% images.forEach(function(img){ %>
+<% images.forEach(function(img, ix){ %>
   <div>
     <a class="anchor" name="<%= img %>"></a>
     <a href="/file/<%= job.SLUG %>/<%= run.MASK %>/<%= img %>">
       <h4><%= img %></h4>
-      <img src="/file/<%= job.SLUG %>/<%= run.MASK %>/thumb/<%= img %>" />
+      <img src="/file/<%= job.SLUG %>/<%= run.MASK %>/<%= thumbs[ix] %>" />
     </a>
   </div>
 <% }) %>
