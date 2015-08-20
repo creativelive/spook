@@ -92,8 +92,8 @@ exports.detail = function(request, reply) {
               return '<a class="anchor" name="test-' + p1 + '">' + p1 + '</a><b>' + p1 + '</b><br># ' + p2;
             })
             .replace(/saving screenshot (.*\.jpg)/g, function(match, p1) {
-              var lastIx = p1.lastIndexOf("/");
-              var thumbUrl = (lastIx === -1) ? "thumb." + p1 : p1.slice(0, lastIx) + "/thumb." + p1.slice(lastIx + 1);
+              var lastIx = p1.lastIndexOf('/');
+              var thumbUrl = (lastIx === -1) ? 'thumb.' + p1 : p1.slice(0, lastIx) + '/thumb.' + p1.slice(lastIx + 1);
               images.push(p1);
               thumbs.push(thumbUrl);
               return '<a href="#' + p1 + '"><div class="screenshot-mini" style="background:url(/file/' + request.params.slug + '/' + mask + '/' + thumbUrl + ');background-size: cover;"></div>' + p1 + '</a>';
