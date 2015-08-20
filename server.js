@@ -5,6 +5,7 @@ var chalk = require('chalk');
 var ejs = require('./lib/ejs');
 var moment = require('moment');
 var path = require('path');
+var pathIsAbsolute = require('path-is-absolute');
 
 module.exports = function init(opts) {
   opts = opts || {};
@@ -33,7 +34,12 @@ module.exports = function init(opts) {
   var server = new Hapi.Server('0.0.0.0', opts.port, serverOpts);
 
   server.settings.app = opts;
-  server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
+  if (opts.dbd && pathIsAbsolute(opts.dbd)) {
+    console.log('ABS');
+    server.settings.app.dbd = opts.dbd;
+  } else {
+    server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
+  }
 
   // logging
   server.on('request', function(request, event) {
