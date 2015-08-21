@@ -35,7 +35,6 @@ module.exports = function init(opts) {
 
   server.settings.app = opts;
   if (opts.dbd && pathIsAbsolute(opts.dbd)) {
-    console.log('ABS');
     server.settings.app.dbd = opts.dbd;
   } else {
     server.settings.app.dbd = path.join(opts.cwd, (opts.dbd || 'run'));
