@@ -111,6 +111,9 @@ if(argv.server) {
       } else {
         formatter(res);
         ghost('Spook run took ' + res.DU + 's');
+        if(res.TO.ST === 'FAIL' && argv['error-on-fail']) {
+          process.exit(1);
+        }
       }
     });
   });
