@@ -1,5 +1,7 @@
 # [![spook](https://raw.githubusercontent.com/creativelive/spook/master/assets/spook-64.png)](https://github.com/creativelive/spook) Spook [![](https://travis-ci.org/creativelive/spook.svg)](https://travis-ci.org/creativelive/spook)
 
+**WARNING! NO LONGER MAINTAINED**
+
 functional testing harness using casperjs.
 
 ## Install
